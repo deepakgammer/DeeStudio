@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project Details — DeeStudio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0a0a;--neon:#00eaff;--accent:#ff00ff;--gold:#f7e26d}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:#eaf6ff;font-family:'Orbitron',system-ui,sans-serif;overflow-x:hidden}
+    .wrap{max-width:900px;margin:0 auto;padding:2rem}
+    a.back{display:inline-block;margin-bottom:1.25rem;padding:.45rem .7rem;border:1px solid rgba(0,234,255,0.12);border-radius:8px;color:var(--neon);text-decoration:none}
+    h1{color:var(--gold);text-shadow:0 0 14px var(--gold),0 0 26px var(--neon)}
+    .meta{color:#9ecfff;font-size:.9rem;margin-bottom:1rem}
+    .desc{color:#bcd3e0;line-height:1.6}
+    .btn-primary{display:inline-block;margin-top:1rem;padding:.6rem 1rem;border-radius:10px;background:linear-gradient(90deg,var(--neon),var(--accent));color:#051017;font-weight:800;text-decoration:none}
+    footer{margin-top:2rem;text-align:center;color:var(--neon);opacity:.9}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="projects.html">← Back to Projects</a>
+    <div id="content">Loading...</div>
+    <footer>© 2025 DeeStudio</footer>
+  </div>
+
+  <script>
+    // Same projects data as in projects.html
+    const PROJECTS = [
+      {id:1,title:'Princess Collection',desc:'Fashion e-commerce — responsive catalogue',tags:['web'],url:'https://www.princesscollection.it.com'},
+      {id:2,title:'L2D Finserv',desc:'Finance & services — corporate site',tags:['web'],url:'https://www.l2dfinserv.it.com'},
+      {id:3,title:'Ana (Archive)',desc:'AI chatbot experiment + analytics',tags:['ai'],url:'#'},
+      {id:4,title:'Neon Runner (Prototype)',desc:'Arcade game prototype — WebGL build',tags:['game'],url:'#'},
+      {id:5,title:'Toolbox (Internal)',desc:'Developer tooling and prototypes',tags:['web'],url:'#'}
+    ];
+
+    function qp(name){ return new URL(location.href).searchParams.get(name); }
+    function render(p){
+      if(!p){ document.getElementById('content').innerHTML = "<h2>Project not found</h2>"; return; }
+      document.getElementById('content').innerHTML = `
+        <h1>${p.title}</h1>
+        <div class="meta">${p.tags.join(', ')}</div>
+        <p class="desc">${p.desc}</p>
+        ${p.url && p.url !== '#' ? `<a class="btn-primary" href="${p.url}" target="_blank">Open Live Project</a>` : `<p style="opacity:.7">This project is archived or not live.</p>`}
+      `;
+    }
+
+    const id = qp('id');
+    const project = PROJECTS.find(p=> String(p.id) === String(id));
+    render(project);
+  </script>
+</body>
+</html>

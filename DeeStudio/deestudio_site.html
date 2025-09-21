@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DeeStudio — Cyberpunk Lab</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --neon: #00eaff;
+      --accent: #ff00ff;
+      --gold: #f7e26d;
+    }
+    *{box-sizing:border-box}
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #eaf6ff;
+      font-family: 'Orbitron', system-ui, sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    canvas#bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      display: block;
+      background: transparent;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      z-index: 9999;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at 30% 30%, #ffffff, var(--neon) 30%, var(--accent) 70%);
+      box-shadow: 0 0 12px var(--neon), 0 0 28px var(--accent);
+      mix-blend-mode: screen;
+      transition: width .12s, height .12s, transform .06s linear;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(3, 6, 10, 0.8);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px var(--neon);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .brand img { height: 42px; filter: drop-shadow(0 0 8px var(--neon)); }
+    .brand .name { font-weight: 700; color: #cfefff; letter-spacing: 1px; }
+    .brand .sub { font-size: .78rem; color: #9ecfff; opacity: .9; }
+
+    ul.nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    ul.nav-links a {
+      color: var(--neon);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    ul.nav-links a:hover {
+      color: var(--gold);
+      text-shadow: 0 0 8px var(--gold);
+    }
+
+    .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
+    .hamburger span { width: 26px; height: 3px; background: var(--neon); border-radius: 3px; }
+
+    header.hero {
+      text-align: center;
+      padding: 6rem 1.2rem 4rem;
+    }
+    header.hero h1 {
+      margin: 0;
+      font-size: 3.6rem;
+      color: var(--gold);
+      text-shadow: 0 0 20px var(--gold), 0 0 40px var(--neon);
+      animation: glitch 2.5s infinite;
+    }
+    header.hero p {
+      margin-top: 1rem;
+      color: #cfe8f6;
+      font-size: 1.12rem;
+    }
+
+    .cta-row{margin-top:1rem}
+    .btn-cta{display:inline-block;padding:.65rem 1rem;border-radius:10px;background:linear-gradient(90deg,var(--neon),var(--accent));color:#05060a;font-weight:800;text-decoration:none;box-shadow:0 8px 30px rgba(0,234,255,0.08);}
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px var(--neon), -2px -2px var(--accent); }
+      20% { text-shadow: -2px 2px var(--accent), 2px -2px var(--neon); }
+      40% { text-shadow: 2px -2px var(--neon), -2px 2px var(--accent); }
+      60% { text-shadow: -2px -2px var(--accent), 2px 2px var(--neon); }
+      100% { text-shadow: 0 0 20px var(--gold), 0 0 40px var(--neon); }
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .projects {
+      background: rgba(6, 12, 20, 0.7);
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    }
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .project {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      padding: 1.5rem;
+      cursor: pointer;
+      background: linear-gradient(180deg, rgba(0, 22, 40, 0.9), rgba(0, 31, 63, 0.55));
+      box-shadow: inset 0 0 0 1px rgba(0, 234, 255, 0.1), 0 6px 24px rgba(0, 0, 0, 0.6);
+      transition: transform .36s, box-shadow .36s;
+    }
+    .project-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+    .project-desc { color: #bcd3e0; font-size: .95rem; }
+    .project::before {
+      content: '';
+      position: absolute;
+      left: -70%;
+      top: 0;
+      height: 100%;
+      width: 70%;
+      background: linear-gradient(120deg, transparent, rgba(0, 234, 255, 0.14), rgba(255, 0, 255, 0.08));
+      transform: skewX(-20deg);
+      transition: left .9s ease;
+    }
+    .project:hover { transform: translateY(-6px) rotateX(4deg) scale(1.03); box-shadow: 0 12px 40px rgba(0, 234, 255, 0.2), 0 0 28px var(--neon); }
+    .project:hover::before { left: 120%; }
+
+    .about, .contact { margin-top: 3rem; text-align: left; max-width: 900px; margin-left: auto; margin-right: auto }
+    .about h2, .contact h2 { color: var(--neon); }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--neon);
+      font-size: .9rem;
+      margin-top: 3rem;
+      box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    @media(max-width:768px){
+      .hamburger { display: flex; }
+      ul.nav-links { display: none; position: absolute; right: 12px; top: 64px; flex-direction: column; background: rgba(6, 12, 20, 0.95); padding: 1rem; border-radius: 8px; }
+      ul.nav-links.active { display: flex; }
+      header.hero h1 { font-size: 2.2rem; }
+      .about, .contact { text-align:center }
+    }
+
+    #statusBadge { position: fixed; left: 12px; bottom: 12px; padding: 6px 10px; background: rgba(0, 0, 0, 0.6); color: #bfefff; font-size: .8rem; border-radius: 6px; z-index: 9998; }
+  </style>
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div id="cursorTrail" class="cursor-trail" aria-hidden="true"></div>
+
+  <nav>
+    <div class="brand">
+      <img src="logo.png" alt="DeeStudio logo" />
+      <div>
+        <div class="name">DeeStudio</div>
+        <div class="sub">Play · Code · Think</div>
+      </div>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="deestudio_site.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="hamburger" id="hamburgerBtn" aria-label="Open menu"><span></span><span></span><span></span></div>
+  </nav>
+
+  <header class="hero">
+    <h1 id="heroTitle">DEE STUDIO</h1>
+    <p id="heroTag">Play. Code. Think.</p>
+    <div class="cta-row"><a class="btn-cta" href="projects.html">View All Projects →</a></div>
+  </header>
+
+  <section id="projects" class="projects">
+    <h2 style="color:var(--neon);text-align:left;margin:0 0 12px 0">Featured Projects</h2>
+    <div class="project-list">
+      <div class="project" role="button" tabindex="0" data-url="https://www.princesscollection.it.com">
+        <div class="project-title">Princess Collection</div>
+        <div class="project-desc">Fashion E-commerce Experience</div>
+      </div>
+      <div class="project" role="button" tabindex="0" data-url="https://www.l2dfinserv.it.com">
+        <div class="project-title">L2D Finserv</div>
+        <div class="project-desc">Finance & Services Platform</div>
+      </div>
+      <div class="project" role="button" tabindex="0" data-url="#">
+        <div class="project-title">Ana (Archive)</div>
+        <div class="project-desc">Our first AI experiment 🤖</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <h2>About DeeStudio</h2>
+    <p>DeeStudio is a creative tech lab founded to build playful, experimental tech: AI experiments, web apps, and game prototypes. We pursue small, iterative wins and ship real things.</p>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:hello@deestudio.com" style="color:#9ecfff">hello@deestudio.com</a></p>
+    
+  </section>
+
+  <footer>© 2025 DeeStudio. All rights reserved.</footer>
+
+  <div id="statusBadge">Background: active</div>
+
+  <script>
+    // ---------- UI helpers ----------
+    const hamburger = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger) hamburger.addEventListener('click', ()=> navLinks.classList.toggle('active'));
+
+    document.querySelectorAll('.project').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const url = card.getAttribute('data-url');
+        if(url && url !== '#') window.open(url,'_blank');
+        card.animate([{ transform:'scale(1)'},{ transform:'scale(0.97)'},{ transform:'scale(1)'}],{ duration:200 });
+      });
+      card.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); card.click(); } });
+    });
+
+    // cursor trail with hover scale for interactives
+    const cursor = document.getElementById('cursorTrail');
+    let lastX=0,lastY=0;
+    document.addEventListener('mousemove',(e)=>{
+      const x=e.clientX,y=e.clientY;
+      lastX+=(x-lastX)*0.28; lastY+=(y-lastY)*0.28;
+      cursor.style.transform = `translate(${lastX}px, ${lastY}px) translate(-50%,-50%)`;
+      const el = document.elementFromPoint(x,y);
+      if (el && (el.closest('.project') || el.tagName==='A' || el.closest('.hamburger'))) {
+        cursor.style.width='34px'; cursor.style.height='34px';
+      } else { cursor.style.width='18px'; cursor.style.height='18px'; }
+    });
+
+    // ---------- Background canvas (neon grid + waves + stars + pulses) ----------
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let w = 0, h = 0;
+    function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
+    resize();
+
+    // stars
+    const stars = new Array(420).fill().map(()=>({ x: Math.random()*w, y: Math.random()*h, z: Math.random()*1500 }));
+
+    // pulses
+    const pulses = [];
+    function spawnPulse(x,y){ pulses.push({x,y,r:0,a:0.6,life:0}); if(pulses.length>8) pulses.shift(); }
+
+    // wave
+    const wave = { time:0, amplitude:30, frequency:0.0025, speed:0.8 };
+
+    // periodic center pulse + interactive click
+    setInterval(()=>{ if (w && h) spawnPulse(w*0.5, h*0.45); }, 2200);
+    window.addEventListener('click',(e)=> spawnPulse(e.clientX, e.clientY));
+
+    // status badge utility
+    const statusBadge = document.getElementById('statusBadge');
+    function setStatus(text){ if(statusBadge) statusBadge.textContent = text; }
+
+    // main draw loop
+    function draw(){
+      // dims
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = 'rgba(3,6,12,0.55)'; ctx.fillRect(0,0,w,h);
+
+      // moving neon grid
+      const gridSize = 60;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(0,234,255,0.08)'; ctx.lineWidth = 1;
+      const offset = (performance.now() * 0.02) % gridSize;
+      for(let gx = -gridSize; gx < w + gridSize; gx += gridSize){ ctx.beginPath(); ctx.moveTo(gx + offset, 0); ctx.lineTo(gx + offset, h); ctx.stroke(); }
+      for(let gy = -gridSize; gy < h + gridSize; gy += gridSize){ ctx.beginPath(); ctx.moveTo(0, gy + offset); ctx.lineTo(w, gy + offset); ctx.stroke(); }
+      ctx.restore();
+
+      // animated sine waves
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for(let yBase = h*0.2; yBase < h; yBase += h*0.12){
+        ctx.beginPath();
+        for(let x = 0; x <= w; x += 6){
+          const t = wave.time + x * wave.frequency;
+          const y = yBase + Math.sin(t) * wave.amplitude * (1 - Math.abs((x - w/2)/(w/2))) * 0.8;
+          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle = `rgba(0,234,255,${0.02 + 0.04 * Math.abs(Math.sin(wave.time*0.6))})`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // stars
+      for(const s of stars){
+        s.z -= 1.6; if(s.z <= 0) s.z = 1500;
+        const k = 900/(900 + s.z);
+        const sx = (s.x - w/2) * k + w/2;
+        const sy = (s.y - h/2) * k + h/2;
+        const r = Math.max(0.4, s.z < 100 ? 1.8 : (1.1 * (1 - k)) );
+        ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(0,234,255,${0.6 * (1 - s.z/1600)})`;
+        ctx.fill();
+      }
+
+      // pulses
+      for(let i = pulses.length -1; i >= 0; i--){
+        const p = pulses[i];
+        p.life += 0.02;
+        p.r += 18 + p.life*6;
+        const alpha = Math.max(0, p.a * (1 - p.life));
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(0,234,255,${alpha})`;
+        ctx.lineWidth = 2.4 * (1 - p.life);
+        ctx.stroke();
+        if(p.life > 1) pulses.splice(i,1);
+      }
+
+      // subtle center glow
+      const cx = w*0.5, cy = h*0.45;
+      const glowGrad = ctx.createRadialGradient(cx, cy, 20, cx, cy, Math.max(w,h)*0.6);
+      glowGrad.addColorStop(0, 'rgba(0,234,255,0.08)');
+      glowGrad.addColorStop(0.3, 'rgba(255,0,255,0.02)');
+      glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glowGrad; ctx.fillRect(0,0,w,h);
+
+      // advance time
+      wave.time += 0.02 * wave.speed;
+      requestAnimationFrame(draw);
+    }
+
+    // initialize drawing
+    draw();
+
+    // responsive handling
+    window.addEventListener('resize', ()=>{
+      resize();
+      // reposition stars
+      for(const s of stars){ s.x = Math.random()*w; s.y = Math.random()*h; s.z = Math.random()*1500; }
+      setStatus('Background: resized');
+      setTimeout(()=> setStatus('Background: active'), 1200);
+    });
+
+    // initial status
+    setStatus('Background: active');
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DeeStudio — Projects</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0a0a0a;
+      --neon:#00eaff;
+      --accent:#ff00ff;
+      --gold:#f7e26d;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#eaf6ff;
+      font-family:'Orbitron',system-ui,sans-serif;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      cursor: none;
+    }
+
+    /* background canvas */
+    canvas#bg2{position:fixed;inset:0;width:100%;height:100%;z-index:-2;display:block}
+
+    .wrap{max-width:1200px;margin:0 auto;padding:2rem 1rem;position:relative;z-index:2}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0}
+    .back{background:transparent;border:1px solid rgba(0,234,255,0.12);padding:.5rem .8rem;border-radius:8px;color:var(--neon);text-decoration:none;font-weight:700}
+
+    /* GLITCH heading */
+    .hero-slab{padding:1.5rem 0 2rem;text-align:center;color:var(--neon);opacity:.95}
+    .glitch-wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.6rem}
+    .glitch {
+      font-size: 2.2rem;
+      color: var(--gold);
+      position: relative;
+      line-height:1;
+      font-weight:900;
+      text-shadow: 0 0 18px var(--gold), 0 0 36px var(--neon);
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0; top: 0;
+      width:100%; height:100%;
+      clip: rect(0, 9999px, 0, 0);
+    }
+    .glitch::before {
+      color: var(--neon);
+      transform: translate(-2px, -1px);
+      text-shadow: -6px 0 var(--neon);
+      animation: glitchTop 2.8s infinite linear;
+    }
+    .glitch::after {
+      color: var(--accent);
+      transform: translate(2px, 1px);
+      text-shadow: 6px 0 var(--accent);
+      animation: glitchBottom 3s infinite linear;
+    }
+    @keyframes glitchTop {
+      0% { clip: rect(0,9999px,0,0); }
+      20% { clip: rect(2px,9999px,48px,0); }
+      40% { clip: rect(8px,9999px,16px,0); }
+      60% { clip: rect(24px,9999px,64px,0); }
+      80% { clip: rect(12px,9999px,36px,0); }
+      100% { clip: rect(0,9999px,0,0); }
+    }
+    @keyframes glitchBottom {
+      0% { clip: rect(0,9999px,0,0); }
+      20% { clip: rect(20px,9999px,60px,0); }
+      40% { clip: rect(2px,9999px,20px,0); }
+      60% { clip: rect(10px,9999px,40px,0); }
+      80% { clip: rect(8px,9999px,28px,0); }
+      100% { clip: rect(0,9999px,0,0); }
+    }
+
+    /* Projects grid */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1.25rem}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      background:linear-gradient(180deg,rgba(0,22,40,0.92),rgba(0,31,63,0.6));
+      padding:1.1rem;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);
+      transition:transform .28s,box-shadow .28s;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,234,255,0.12)}
+    .card h3{margin:0 0 .4rem;color:#fff;font-size:1.15rem}
+    .meta{font-size:.82rem;color:#9ecfff;margin-bottom:.6rem}
+    .card p{margin:0 0 .6rem;color:#bcd3e0}
+    .card .actions{display:flex;gap:.5rem;flex-wrap:wrap}
+    .btn{padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(158,207,255,0.08);background:transparent;color:var(--neon);text-decoration:none;font-weight:700}
+    .btn:hover{transform:translateY(-4px)}
+
+    footer{margin-top:2rem;text-align:center;color:var(--neon);opacity:.9}
+
+    /* cursor trail */
+    .trail-dot{
+      position:fixed;top:0;left:0;
+      width:14px;height:14px;border-radius:50%;
+      pointer-events:none;
+      transform:translate(-50%,-50%);
+      background:radial-gradient(circle at 30% 30%, #fff, var(--neon) 30%, var(--accent) 70%);
+      box-shadow:0 0 12px var(--neon), 0 0 22px var(--accent);
+      mix-blend-mode:screen;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg2" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <header>
+      <h1 class="glitch" data-text="Our Projects">Our Projects</h1>
+      <a class="back" href="deestudio_site.html">← Back</a>
+    </header>
+
+    <div class="hero-slab">
+      <p style="max-width:820px;margin:0 auto;opacity:.95;color:var(--neon)">
+        Full project gallery — curated selection. Click a card to open the live project.
+      </p>
+    </div>
+
+    <div class="grid" id="projectsGrid"></div>
+
+    <footer>© 2025 DeeStudio</footer>
+  </div>
+
+  <div id="cursorTrailContainer"></div>
+
+  <script>
+    // ---------- Projects ----------
+    const PROJECTS = [
+      { id:1, title:'Princess Collection', desc:'Fashion e-commerce — responsive catalogue', tags:['web'], url:'https://www.princesscollection.it.com' },
+      { id:2, title:'L2D Finserv', desc:'Finance & services — corporate site', tags:['web'], url:'https://www.l2dfinserv.it.com' },
+      { id:3, title:'DeeCryptor', desc:'Secure your messages with encrypted PNGs', tags:['tool'], url:'https://deecryptor.onrender.com' }
+    ];
+
+    const grid = document.getElementById('projectsGrid');
+    function createCard(p) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${p.title}</h3>
+        <div class="meta">${p.tags.join(', ')}</div>
+        <p>${p.desc}</p>
+        <div class="actions">
+          <a class="btn" href="${p.url}" target="_blank" rel="noreferrer">Open</a>
+          <a class="btn" href="details.html?id=${p.id}">Details</a>
+        </div>
+      `;
+      return card;
+    }
+    function render(){ grid.innerHTML=''; for(const p of PROJECTS) grid.appendChild(createCard(p)); }
+    render();
+
+    // ---------- Background ----------
+    const c = document.getElementById('bg2'), ctx = c.getContext('2d');
+    let W=innerWidth, H=innerHeight; c.width=W; c.height=H;
+    const stars = new Array(320).fill().map(()=>({ x:Math.random()*W, y:Math.random()*H, z:Math.random()*1400 }));
+    function draw(){ ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(2,6,12,0.72)'; ctx.fillRect(0,0,W,H);
+      for(const s of stars){ s.z -= 1.1; if(s.z<=0) s.z=1400; const k=900/(900+s.z); const sx=(s.x-W/2)*k+W/2; const sy=(s.y-H/2)*k+H/2; ctx.beginPath(); ctx.arc(sx,sy,1,0,Math.PI*2); ctx.fillStyle='rgba(0,234,255,0.55)'; ctx.fill(); }
+      requestAnimationFrame(draw);
+    } draw();
+
+    // ---------- Cursor Trail ----------
+    const trailContainer = document.getElementById('cursorTrailContainer');
+    const TRAIL_COUNT=8; const dots=[];
+    for(let i=0;i<TRAIL_COUNT;i++){ const d=document.createElement('div'); d.className='trail-dot'; trailContainer.appendChild(d); dots.push({el:d,x:W/2,y:H/2}); }
+    let mx=W/2,my=H/2; document.addEventListener('mousemove',(e)=>{mx=e.clientX;my=e.clientY;});
+    function updateTrail(){ let x=mx,y=my; for(const d of dots){ d.x+=(x-d.x)*0.2; d.y+=(y-d.y)*0.2; d.el.style.transform=`translate(${d.x}px,${d.y}px) translate(-50%,-50%)`; x=d.x;y=d.y; } requestAnimationFrame(updateTrail); }
+    updateTrail();
+  </script>
+</body>
+</html>
