@@ -5,20 +5,102 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Project Details — DeeStudio</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
   <style>
-    :root{--bg:#0a0a0a;--neon:#00eaff;--accent:#ff00ff;--gold:#f7e26d}
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:#eaf6ff;font-family:'Orbitron',system-ui,sans-serif;overflow-x:hidden}
-    .wrap{max-width:900px;margin:0 auto;padding:2rem}
-    a.back{display:inline-block;margin-bottom:1.25rem;padding:.45rem .7rem;border:1px solid rgba(0,234,255,0.12);border-radius:8px;color:var(--neon);text-decoration:none}
-    h1{color:var(--gold);text-shadow:0 0 14px var(--gold),0 0 26px var(--neon)}
-    .meta{color:#9ecfff;font-size:.9rem;margin-bottom:1rem}
-    .desc{color:#bcd3e0;line-height:1.6}
-    .btn-primary{display:inline-block;margin-top:1rem;padding:.6rem 1rem;border-radius:10px;background:linear-gradient(90deg,var(--neon),var(--accent));color:#051017;font-weight:800;text-decoration:none}
-    footer{margin-top:2rem;text-align:center;color:var(--neon);opacity:.9}
+    :root {
+      --bg: #0a0a0a;
+      --neon: #00eaff;
+      --accent: #ff00ff;
+      --gold: #f7e26d;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #eaf6ff;
+      font-family: 'Orbitron', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.2rem;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(0,234,255,0.15);
+      border-radius: 8px;
+      color: var(--neon);
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.25s ease;
+    }
+    a.back:hover {
+      background: rgba(0,234,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    h1 {
+      color: var(--gold);
+      text-shadow: 0 0 14px var(--gold), 0 0 28px var(--neon);
+      margin-bottom: 0.3rem;
+    }
+
+    .meta {
+      color: #9ecfff;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .desc {
+      color: #bcd3e0;
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--neon), var(--accent));
+      color: #051017;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 0 12px var(--neon);
+      transition: all 0.25s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px var(--accent);
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--neon);
+      opacity: 0.85;
+      font-size: 0.9rem;
+    }
+
+    /* subtle glow animation for title */
+    @keyframes glowPulse {
+      0% { text-shadow: 0 0 8px var(--gold), 0 0 16px var(--neon); }
+      50% { text-shadow: 0 0 16px var(--accent), 0 0 28px var(--neon); }
+      100% { text-shadow: 0 0 8px var(--gold), 0 0 16px var(--neon); }
+    }
+    h1 { animation: glowPulse 4s ease-in-out infinite; }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <a class="back" href="projects.html">← Back to Projects</a>
@@ -27,28 +109,62 @@
   </div>
 
   <script>
-    // Same projects data as in projects.html
+    // --- Same updated projects list as in projects.html ---
     const PROJECTS = [
-      {id:1,title:'Princess Collection',desc:'Fashion e-commerce — responsive catalogue',tags:['web'],url:'https://www.princesscollection.it.com'},
-      {id:2,title:'L2D Finserv',desc:'Finance & services — corporate site',tags:['web'],url:'https://www.l2dfinserv.it.com'},
-      {id:3,title:'Ana (Archive)',desc:'AI chatbot experiment + analytics',tags:['ai'],url:'#'},
-      {id:4,title:'Neon Runner (Prototype)',desc:'Arcade game prototype — WebGL build',tags:['game'],url:'#'},
-      {id:5,title:'Toolbox (Internal)',desc:'Developer tooling and prototypes',tags:['web'],url:'#'}
+      {
+        id: 1,
+        title: 'Princess Collection',
+        desc: 'A responsive fashion e-commerce experience built with elegance — clean catalogue, product filtering, and smooth checkout flow.',
+        tags: ['web', 'shop'],
+        url: 'https://princesscollection.it.com'
+      },
+      {
+        id: 2,
+        title: 'L2D Finserv',
+        desc: 'Corporate web platform for financial services — designed for trust, structure, and high-performance lead capture.',
+        tags: ['web', 'corporate'],
+        url: 'https://l2dfinserv.it.com'
+      },
+      {
+        id: 3,
+        title: 'DeeCryptor',
+        desc: 'Web tool to encrypt text messages into image pixels — privacy-first, built with JavaScript, Node.js, and Canvas API.',
+        tags: ['tool', 'ai'],
+        url: 'https://deecryptor.onrender.com'
+      },
+      {
+        id: 4,
+        title: 'Perlyn Beauty',
+        desc: 'Full-stack beauty e-commerce platform built for Prapthika. Features include Supabase database, dynamic product pages, live PhonePe V2 gateway integration, coupon engine, review system, offers, admin dashboard, and shipping automation. A complete end-to-end commercial build by DeeStudio.',
+        tags: ['web', 'ecommerce', 'supabase'],
+        url: 'https://www.perlynbeauty.co'
+      }
     ];
 
-    function qp(name){ return new URL(location.href).searchParams.get(name); }
-    function render(p){
-      if(!p){ document.getElementById('content').innerHTML = "<h2>Project not found</h2>"; return; }
-      document.getElementById('content').innerHTML = `
+    // --- Fetch query param (id) ---
+    function qp(name) { return new URL(location.href).searchParams.get(name); }
+
+    // --- Render selected project ---
+    function render(p) {
+      const content = document.getElementById('content');
+      if (!p) {
+        content.innerHTML = "<h2>Project not found</h2>";
+        return;
+      }
+      content.innerHTML = `
         <h1>${p.title}</h1>
         <div class="meta">${p.tags.join(', ')}</div>
         <p class="desc">${p.desc}</p>
-        ${p.url && p.url !== '#' ? `<a class="btn-primary" href="${p.url}" target="_blank">Open Live Project</a>` : `<p style="opacity:.7">This project is archived or not live.</p>`}
+        ${
+          p.url && p.url !== '#'
+            ? `<a class="btn-primary" href="${p.url}" target="_blank" rel="noreferrer">Open Live Project</a>`
+            : `<p style="opacity:.7">This project is archived or not live.</p>`
+        }
       `;
     }
 
     const id = qp('id');
-    const project = PROJECTS.find(p=> String(p.id) === String(id));
+    const project = PROJECTS.find(p => String(p.id) === String(id));
     render(project);
   </script>
 </body>
