@@ -136,51 +136,109 @@
 
   <div id="cursorTrailContainer"></div>
 
-  <script>
-    // ---------- Projects ----------
-    const PROJECTS = [
-      { id:1, title:'Princess Collection', desc:'Fashion e-commerce — responsive catalogue', tags:['web'], url:'https://www.princesscollection.it.com' },
-      { id:2, title:'L2D Finserv', desc:'Finance & services — corporate site', tags:['web'], url:'https://www.l2dfinserv.it.com' },
-      { id:3, title:'DeeCryptor', desc:'Secure your messages with encrypted PNGs', tags:['tool'], url:'https://deecryptor.onrender.com' }
-      { id:4, title:'PerlynBeauty', desc:'Fashion e-commerce — responsive catalogue', tags:['web'], url:'https://perlynbeauty.co' }
-    ];
-
-    const grid = document.getElementById('projectsGrid');
-    function createCard(p) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3>${p.title}</h3>
-        <div class="meta">${p.tags.join(', ')}</div>
-        <p>${p.desc}</p>
-        <div class="actions">
-          <a class="btn" href="${p.url}" target="_blank" rel="noreferrer">Open</a>
-          <a class="btn" href="details.html?id=${p.id}">Details</a>
-        </div>
-      `;
-      return card;
+<script>
+  // ---------- Projects ----------
+  const PROJECTS = [
+    {
+      id: 1,
+      title: 'Princess Collection',
+      desc: 'Fashion e-commerce — responsive catalogue',
+      tags: ['web', 'shop'],
+      url: 'https://princesscollection.it.com'
+    },
+    {
+      id: 2,
+      title: 'L2D Finserv',
+      desc: 'Finance & services — corporate platform',
+      tags: ['web', 'corporate'],
+      url: 'https://l2dfinserv.it.com'
+    },
+    {
+      id: 3,
+      title: 'DeeCryptor',
+      desc: 'Secure your messages with encrypted PNGs',
+      tags: ['tool', 'ai'],
+      url: 'https://deecryptor.onrender.com'
+    },
+    {
+      id: 4,
+      title: 'Perlyn Beauty',
+      desc: 'Full-stack beauty e-commerce — Supabase + PhonePe V2 Gateway + Admin Dashboard',
+      tags: ['web', 'ecommerce', 'supabase'],
+      url: 'https://www.perlynbeauty.co'
     }
-    function render(){ grid.innerHTML=''; for(const p of PROJECTS) grid.appendChild(createCard(p)); }
-    render();
+  ];
 
-    // ---------- Background ----------
-    const c = document.getElementById('bg2'), ctx = c.getContext('2d');
-    let W=innerWidth, H=innerHeight; c.width=W; c.height=H;
-    const stars = new Array(320).fill().map(()=>({ x:Math.random()*W, y:Math.random()*H, z:Math.random()*1400 }));
-    function draw(){ ctx.clearRect(0,0,W,H); ctx.fillStyle='rgba(2,6,12,0.72)'; ctx.fillRect(0,0,W,H);
-      for(const s of stars){ s.z -= 1.1; if(s.z<=0) s.z=1400; const k=900/(900+s.z); const sx=(s.x-W/2)*k+W/2; const sy=(s.y-H/2)*k+H/2; ctx.beginPath(); ctx.arc(sx,sy,1,0,Math.PI*2); ctx.fillStyle='rgba(0,234,255,0.55)'; ctx.fill(); }
-      requestAnimationFrame(draw);
-    } draw();
+  const grid = document.getElementById('projectsGrid');
+  function createCard(p) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${p.title}</h3>
+      <div class="meta">${p.tags.join(', ')}</div>
+      <p>${p.desc}</p>
+      <div class="actions">
+        <a class="btn" href="${p.url}" target="_blank" rel="noreferrer">Open</a>
+        <a class="btn" href="details.html?id=${p.id}">Details</a>
+      </div>
+    `;
+    return card;
+  }
+  function render() {
+    grid.innerHTML = '';
+    for (const p of PROJECTS) grid.appendChild(createCard(p));
+  }
+  render();
 
-    // ---------- Cursor Trail ----------
-    const trailContainer = document.getElementById('cursorTrailContainer');
-    const TRAIL_COUNT=8; const dots=[];
-    for(let i=0;i<TRAIL_COUNT;i++){ const d=document.createElement('div'); d.className='trail-dot'; trailContainer.appendChild(d); dots.push({el:d,x:W/2,y:H/2}); }
-    let mx=W/2,my=H/2; document.addEventListener('mousemove',(e)=>{mx=e.clientX;my=e.clientY;});
-    function updateTrail(){ let x=mx,y=my; for(const d of dots){ d.x+=(x-d.x)*0.2; d.y+=(y-d.y)*0.2; d.el.style.transform=`translate(${d.x}px,${d.y}px) translate(-50%,-50%)`; x=d.x;y=d.y; } requestAnimationFrame(updateTrail); }
-    updateTrail();
-  </script>
+  // ---------- Background ----------
+  const c = document.getElementById('bg2'), ctx = c.getContext('2d');
+  let W = innerWidth, H = innerHeight; c.width = W; c.height = H;
+  const stars = new Array(320).fill().map(() => ({ x: Math.random() * W, y: Math.random() * H, z: Math.random() * 1400 }));
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(2,6,12,0.72)';
+    ctx.fillRect(0, 0, W, H);
+    for (const s of stars) {
+      s.z -= 1.1;
+      if (s.z <= 0) s.z = 1400;
+      const k = 900 / (900 + s.z);
+      const sx = (s.x - W / 2) * k + W / 2;
+      const sy = (s.y - H / 2) * k + H / 2;
+      ctx.beginPath();
+      ctx.arc(sx, sy, 1, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0,234,255,0.55)';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // ---------- Cursor Trail ----------
+  const trailContainer = document.getElementById('cursorTrailContainer');
+  const TRAIL_COUNT = 8; const dots = [];
+  for (let i = 0; i < TRAIL_COUNT; i++) {
+    const d = document.createElement('div');
+    d.className = 'trail-dot';
+    trailContainer.appendChild(d);
+    dots.push({ el: d, x: W / 2, y: H / 2 });
+  }
+  let mx = W / 2, my = H / 2;
+  document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+  function updateTrail() {
+    let x = mx, y = my;
+    for (const d of dots) {
+      d.x += (x - d.x) * 0.2;
+      d.y += (y - d.y) * 0.2;
+      d.el.style.transform = `translate(${d.x}px,${d.y}px) translate(-50%,-50%)`;
+      x = d.x; y = d.y;
+    }
+    requestAnimationFrame(updateTrail);
+  }
+  updateTrail();
+</script>
+
 </body>
 </html>
+
 
 
