@@ -4,168 +4,402 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Project Details — DeeStudio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <!-- Modern Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Three.js for 3D Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
     :root {
-      --bg: #0a0a0a;
-      --neon: #00eaff;
-      --accent: #ff00ff;
-      --gold: #f7e26d;
+      --bg: #050510;
+      --neon-blue: #00d2ff;
+      --neon-purple: #9d00ff;
+      --text-main: #f0f4f8;
+      --text-muted: #8b9bb4;
+      --glass-bg: rgba(15, 15, 30, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: rgba(0, 0, 0, 0.5);
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: #eaf6ff;
-      font-family: 'Orbitron', system-ui, sans-serif;
-      overflow-x: hidden;
+    #webgl-container {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1; pointer-events: none;
     }
+
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 5%; background: rgba(5, 5, 16, 0.3);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+    
+    .nav-brand {
+      display: flex; align-items: center; gap: 1rem; text-decoration: none;
+    }
+    .nav-brand h1 {
+      font-weight: 800; font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--text-main), var(--neon-blue));
+      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 600; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
 
     .wrap {
+      padding: 10rem 5% 5rem;
       max-width: 900px;
       margin: 0 auto;
-      padding: 2rem 1.2rem;
+      flex: 1;
+      width: 100%;
     }
 
-    a.back {
-      display: inline-block;
-      margin-bottom: 1.25rem;
-      padding: 0.45rem 0.8rem;
-      border: 1px solid rgba(0,234,255,0.15);
-      border-radius: 8px;
-      color: var(--neon);
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
       text-decoration: none;
-      font-weight: 700;
-      transition: all 0.25s ease;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
     }
-    a.back:hover {
-      background: rgba(0,234,255,0.1);
-      transform: translateY(-2px);
+    .back-link:hover {
+      color: var(--neon-blue);
+      border-color: var(--neon-blue);
+      background: rgba(0, 210, 255, 0.05);
+      transform: translateX(-5px);
     }
 
-    h1 {
-      color: var(--gold);
-      text-shadow: 0 0 14px var(--gold), 0 0 28px var(--neon);
-      margin-bottom: 0.3rem;
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 20px;
+      padding: 4rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      animation: liftUp 0.6s ease-out;
     }
 
-    .meta {
-      color: #9ecfff;
-      font-size: 0.9rem;
+    @keyframes liftUp {
+      from { opacity: 0; transform: translateY(40px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .glass-panel::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(157,0,255,0.05) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .content-area {
+      position: relative;
+      z-index: 2;
+    }
+
+    h1.project-title {
+      font-size: 3.5rem;
+      font-weight: 900;
       margin-bottom: 1rem;
-      opacity: 0.9;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
+    }
+
+    .meta-tags {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid var(--neon-blue);
+      color: var(--neon-blue);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .desc {
-      color: #bcd3e0;
-      line-height: 1.7;
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 3rem;
     }
 
-    .btn-primary {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.7rem 1.2rem;
-      border-radius: 10px;
-      background: linear-gradient(90deg, var(--neon), var(--accent));
-      color: #051017;
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 12px;
       font-weight: 800;
+      font-size: 1.1rem;
       text-decoration: none;
-      box-shadow: 0 0 12px var(--neon);
-      transition: all 0.25s ease;
+      display: inline-block;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(157, 0, 255, 0.4);
+      border: none;
+      cursor: pointer;
     }
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 20px var(--accent);
+
+    .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 210, 255, 0.6);
     }
+
+    .btn.disabled {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      border: 1px solid var(--glass-border);
+    }
+    .btn.disabled:hover { transform: none; }
 
     footer {
-      margin-top: 3rem;
       text-align: center;
-      color: var(--neon);
-      opacity: 0.85;
-      font-size: 0.9rem;
+      padding: 2rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
     }
 
-    /* subtle glow animation for title */
-    @keyframes glowPulse {
-      0% { text-shadow: 0 0 8px var(--gold), 0 0 16px var(--neon); }
-      50% { text-shadow: 0 0 16px var(--accent), 0 0 28px var(--neon); }
-      100% { text-shadow: 0 0 8px var(--gold), 0 0 16px var(--neon); }
+    .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 101; }
+    .hamburger span { width: 30px; height: 3px; background: var(--text-main); border-radius: 5px; transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%; height: 100vh; width: 100%;
+        background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: right 0.4s cubic-bezier(0.77, 0.2, 0.05, 1); padding: 2rem;
+      }
+      .nav-links.active { right: 0; }
+      .nav-links li { margin: 1.5rem 0; }
+      .nav-links a { font-size: 1.8rem; }
+      .glass-panel { padding: 2.5rem 1.5rem; }
+      h1.project-title { font-size: 2.5rem; }
+      .wrap { padding: 8rem 1.5rem 4rem; }
+      .nav-brand h1 { font-size: 1.2rem; }
     }
-    h1 { animation: glowPulse 4s ease-in-out infinite; }
   </style>
 </head>
-
 <body>
+
+  <div id="webgl-container"></div>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <h1>DEESTUDIO</h1>
+    </a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lyra">Lyra AI</a></li>
+      <li><a href="projects.html" style="color:var(--neon-blue)">Projects</a></li>
+    </ul>
+  </nav>
+
   <div class="wrap">
-    <a class="back" href="projects.html">← Back to Projects</a>
-    <div id="content">Loading...</div>
-    <footer>© 2025 DeeStudio</footer>
+    <a href="projects.html" class="back-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Repository
+    </a>
+    
+    <div class="glass-panel" id="detailPanel">
+      <div class="content-area" id="content">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
   </div>
 
+  <footer>© 2026 DeeStudio. Innovation Engineered.</footer>
+
   <script>
-    // --- Same updated projects list as in projects.html ---
+    // --- Mobile Menu Toggle ---
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
+    }
+
+    // --- Shared Projects Data ---
     const PROJECTS = [
       {
-        id: 1,
+        id: 'lyra',
+        title: 'Lyra App',
+        desc: 'Lyra is a next-generation AI personal assistant built natively for seamless Android integration. Utilizing advanced LLM logic and optimized local inference, she can automate your workflows, assist with tasks, schedule routines, and dynamically adapt to your unique lifestyle patterns directly on your mobile device.',
+        tags: ['app', 'ai', 'android', 'automation'],
+        url: 'index.html#lyra'
+      },
+      {
+        id: '1',
         title: 'Princess Collection',
-        desc: 'A responsive fashion e-commerce experience built with elegance — clean catalogue, product filtering, and smooth checkout flow.',
-        tags: ['web', 'shop'],
+        desc: 'A sophisticated fashion e-commerce storefront delivering premium shopping experiences. Built with optimized performance logic, dynamic catalogs, immersive visual design, and seamless filtration capabilities across various fashion categories.',
+        tags: ['web', 'shop', 'frontend'],
         url: 'https://princesscollection.it.com'
       },
       {
-        id: 2,
+        id: '2',
         title: 'L2D Finserv',
-        desc: 'Corporate web platform for financial services — designed for trust, structure, and high-performance lead capture.',
-        tags: ['web', 'corporate'],
+        desc: 'Secure enterprise financial portal architected for streamlined client lead generation, structural integrity, and high-performance load states during critical B2B engagement.',
+        tags: ['web', 'corporate', 'lead-gen'],
         url: 'https://l2dfinserv.it.com'
       },
       {
-        id: 3,
+        id: '3',
         title: 'DeeCryptor',
-        desc: 'Web tool to encrypt text messages into image pixels — privacy-first, built with JavaScript, Node.js, and Canvas API.',
-        tags: ['tool', 'ai'],
+        desc: 'An advanced steganography utility converting sensitive text strings into encrypted pixel arrays. Entirely privacy-first, leveraging browser-native HTML5 Canvas algorithms and JS crypto modules for robust security without server-side storage.',
+        tags: ['tool', 'ai', 'cryptography'],
         url: 'https://deecryptor.onrender.com'
       },
       {
-        id: 4,
+        id: '4',
         title: 'Perlyn Beauty',
-        desc: 'Full-stack beauty e-commerce platform built for Prapthika. Features include Supabase database, dynamic product pages, live PhonePe V2 gateway integration, coupon engine, review system, offers, admin dashboard, and shipping automation. A complete end-to-end commercial build by DeeStudio.',
-        tags: ['web', 'ecommerce', 'supabase'],
+        desc: 'Commercial beauty marketplace built end-to-end. Integrating Supabase as a robust BaaS, a dynamic discounting engine, live cross-platform review systems, and native PhonePe V2 payments gateway processing. A complete and live commercial product suite.',
+        tags: ['web', 'ecommerce', 'supabase', 'full-stack'],
         url: 'https://www.perlynbeauty.co'
       }
     ];
 
-    // --- Fetch query param (id) ---
     function qp(name) { return new URL(location.href).searchParams.get(name); }
 
-    // --- Render selected project ---
     function render(p) {
       const content = document.getElementById('content');
       if (!p) {
-        content.innerHTML = "<h2>Project not found</h2>";
+        content.innerHTML = `
+          <h1 class="project-title" style="color:var(--text-muted)">404 : Project Unlinked</h1>
+          <p class="desc">The requested module could not be found within the active directory.</p>
+        `;
         return;
       }
+
+      const tagsHTML = p.tags.map(t => `<span class="badge">${t}</span>`).join('');
+      
+      let actionBtn = '';
+      if (p.url && p.url !== '#') {
+        const target = p.id === 'lyra' ? '_self' : '_blank';
+        actionBtn = `<a class="btn" href="${p.url}" target="${target}" rel="noreferrer">Initialize System</a>`;
+      } else {
+        actionBtn = `<span class="btn disabled">System Offline</span>`;
+      }
+
       content.innerHTML = `
-        <h1>${p.title}</h1>
-        <div class="meta">${p.tags.join(', ')}</div>
+        <h1 class="project-title">${p.title}</h1>
+        <div class="meta-tags">${tagsHTML}</div>
         <p class="desc">${p.desc}</p>
-        ${
-          p.url && p.url !== '#'
-            ? `<a class="btn-primary" href="${p.url}" target="_blank" rel="noreferrer">Open Live Project</a>`
-            : `<p style="opacity:.7">This project is archived or not live.</p>`
-        }
+        ${actionBtn}
       `;
     }
 
     const id = qp('id');
     const project = PROJECTS.find(p => String(p.id) === String(id));
     render(project);
+
+    // --- Interactive 3D Tilt for Detail Card ---
+    const panel = document.getElementById('detailPanel');
+    panel.addEventListener('mousemove', (e) => {
+      const rect = panel.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotateX = (y / (rect.height / 2)) * -4;
+      const rotateY = (x / (rect.width / 2)) * 4;
+      panel.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    panel.addEventListener('mouseleave', () => {
+      panel.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+      panel.style.transition = 'transform 0.5s ease-out';
+    });
+    panel.addEventListener('mouseenter', () => {
+      panel.style.transition = 'none';
+    });
+
+    // --- Three.js Background Script ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+    const geo = new THREE.BufferGeometry();
+    const count = 600;
+    const pos = new Float32Array(count * 3);
+    for(let i = 0; i < count * 3; i++) {
+        pos[i] = (Math.random() - 0.5) * 600;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    
+    // Using blue/purple mix
+    const mat = new THREE.PointsMaterial({ size: 2.5, color: 0x00d2ff, opacity: 0.5, transparent: true, blending: THREE.AdditiveBlending });
+    const mesh = new THREE.Points(geo, mat);
+    scene.add(mesh);
+    camera.position.z = 200;
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', (e) => {
+        mx = (e.clientX - window.innerWidth/2) * 0.05;
+        my = (e.clientY - window.innerHeight/2) * 0.05;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        mesh.rotation.x += 0.0005;
+        mesh.rotation.y += 0.001;
+        
+        camera.position.x += (mx - camera.position.x) * 0.05;
+        camera.position.y += (-my - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+        
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   </script>
 </body>
 </html>
