@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Project Details — DeeStudio</title>
+  <title>DeeStudio — 3D Cyberpunk Lab</title>
 
   <!-- Modern Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -23,170 +23,332 @@
       --glass-shadow: rgba(0, 0, 0, 0.5);
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     
     body {
       background-color: var(--bg);
       color: var(--text-main);
       font-family: 'Outfit', sans-serif;
       overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      scroll-behavior: smooth;
     }
 
     #webgl-container {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: -1; pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
     }
 
+    /* Glassmorphism Navigation */
     nav {
-      position: fixed; top: 0; width: 100%; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.5rem 5%; background: rgba(5, 5, 16, 0.3);
-      backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      background: rgba(5, 5, 16, 0.3);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
       transition: all 0.3s ease;
     }
     
     .nav-brand {
-      display: flex; align-items: center; gap: 1rem; text-decoration: none;
-    }
-    .nav-brand h1 {
-      font-weight: 800; font-size: 1.5rem;
-      background: linear-gradient(90deg, var(--text-main), var(--neon-blue));
-      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 600; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
-
-    .wrap {
-      padding: 10rem 5% 5rem;
-      max-width: 900px;
-      margin: 0 auto;
-      flex: 1;
-      width: 100%;
-    }
-
-    .back-link {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
+      gap: 1rem;
+      text-decoration: none;
+    }
+    
+    .nav-brand img {
+      height: 48px;
+      filter: drop-shadow(0 0 10px var(--neon-blue));
+    }
+    
+    .nav-brand h1 {
+      font-weight: 800;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--text-main), var(--neon-blue));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      color: var(--text-main);
       text-decoration: none;
       font-weight: 600;
-      margin-bottom: 2rem;
+      font-size: 1.1rem;
       transition: all 0.3s ease;
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
+      position: relative;
     }
-    .back-link:hover {
+    
+    .nav-links a:hover {
       color: var(--neon-blue);
-      border-color: var(--neon-blue);
-      background: rgba(0, 210, 255, 0.05);
-      transform: translateX(-5px);
+      text-shadow: 0 0 15px var(--neon-blue);
     }
 
-    .glass-panel {
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .hero-title {
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff, var(--neon-blue), var(--neon-purple));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px rgba(157, 0, 255, 0.4));
+      animation: float 6s ease-in-out infinite;
+      perspective: 1000px;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotateX(5deg) rotateY(-5deg); }
+      50% { transform: translateY(-20px) rotateX(-5deg) rotateY(5deg); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Lyra Section */
+    .lyra-section {
+      padding: 8rem 5%;
+      position: relative;
+    }
+
+    .glass-card {
       background: var(--glass-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 210, 255, 0.2);
-      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
       padding: 4rem;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-      position: relative;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 4rem;
       overflow: hidden;
-      transform-style: preserve-3d;
-      animation: liftUp 0.6s ease-out;
-    }
-
-    @keyframes liftUp {
-      from { opacity: 0; transform: translateY(40px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .glass-panel::after {
-      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle at center, rgba(157,0,255,0.05) 0%, transparent 60%);
-      pointer-events: none; z-index: 0;
-    }
-
-    .content-area {
       position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.1s;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(157,0,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .lyra-content {
+      flex: 1;
       z-index: 2;
     }
 
-    h1.project-title {
-      font-size: 3.5rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
-      color: #fff;
-      text-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
-    }
-
-    .meta-tags {
-      display: flex;
-      gap: 0.8rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      padding: 0.4rem 1rem;
+    .lyra-badge {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
       border-radius: 50px;
       background: rgba(0, 210, 255, 0.1);
       border: 1px solid var(--neon-blue);
       color: var(--neon-blue);
-      font-size: 0.8rem;
       font-weight: 800;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
     }
 
-    .desc {
-      font-size: 1.2rem;
+    .lyra-title {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .lyra-desc {
+      font-size: 1.15rem;
       color: var(--text-muted);
-      line-height: 1.8;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .btn {
       padding: 1rem 2rem;
       border-radius: 12px;
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1rem;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
       transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
       background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
       color: #fff;
       box-shadow: 0 10px 25px rgba(157, 0, 255, 0.4);
-      border: none;
-      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn:hover {
-      transform: translateY(-5px);
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.05);
       box-shadow: 0 15px 35px rgba(0, 210, 255, 0.6);
     }
 
-    .btn.disabled {
-      background: rgba(255,255,255,0.1);
-      color: var(--text-muted);
-      box-shadow: none;
-      cursor: not-allowed;
-      border: 1px solid var(--glass-border);
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
     }
-    .btn.disabled:hover { transform: none; }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-5px);
+      border-color: var(--neon-blue);
+    }
+
+    .lyra-visual {
+      flex: 1;
+      height: 400px;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .ai-sphere {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0,210,255,0.8) 0%, rgba(157,0,255,0.4) 50%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(20px);
+      animation: pulseSphere 4s alternate infinite;
+    }
+    @keyframes pulseSphere {
+      0% { transform: scale(0.8); opacity: 0.6; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+
+    /* Projects Section */
+    .projects-section {
+      padding: 6rem 5%;
+    }
+    
+    .section-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 3rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .project-card {
+      background: rgba(15, 15, 30, 0.5);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(0, 210, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-15px) scale(1.03);
+      border-color: var(--neon-blue);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 210, 255, 0.2);
+    }
+
+    .project-card:hover::after {
+      transform: translateX(100%);
+    }
+
+    .project-card h3 {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
 
     footer {
       text-align: center;
-      padding: 2rem;
+      padding: 3rem 1rem;
       border-top: 1px solid var(--glass-border);
       color: var(--text-muted);
+      background: rgba(5, 5, 16, 0.8);
+      backdrop-filter: blur(10px);
     }
 
     .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 101; }
@@ -195,7 +357,7 @@
     .hamburger.active span:nth-child(2) { opacity: 0; }
     .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .hamburger { display: flex; }
       .nav-links {
         position: fixed; top: 0; right: -100%; height: 100vh; width: 100%;
@@ -206,19 +368,31 @@
       .nav-links.active { right: 0; }
       .nav-links li { margin: 1.5rem 0; }
       .nav-links a { font-size: 1.8rem; }
-      .glass-panel { padding: 2.5rem 1.5rem; }
-      h1.project-title { font-size: 2.5rem; }
-      .wrap { padding: 8rem 1.5rem 4rem; }
+      
+      .hero-title { font-size: 3.2rem; margin-top: 2rem; }
+      .hero-subtitle { font-size: 1.1rem; }
+      .glass-card { flex-direction: column; padding: 2.5rem 1.5rem; gap: 2.5rem; }
+      .lyra-title { font-size: 2.8rem; text-align: center; }
+      .lyra-desc { text-align: center; font-size: 1.05rem; }
+      .lyra-content { display: flex; flex-direction: column; align-items: center; }
+      .lyra-visual { height: 280px; width: 100%; }
+      .projects-section { padding: 4rem 1.5rem; }
+      .section-title { font-size: 2.2rem; }
       .nav-brand h1 { font-size: 1.2rem; }
+      .nav-brand img { height: 36px; }
+      .btn-group { justify-content: center; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Three.js Background -->
   <div id="webgl-container"></div>
 
+  <!-- Navigation -->
   <nav>
     <a href="index.html" class="nav-brand">
+      <img src="logo.png" alt="DeeStudio" onerror="this.style.display='none'">
       <h1>DEESTUDIO</h1>
     </a>
     <div class="hamburger" id="hamburger">
@@ -226,171 +400,149 @@
     </div>
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="index.html#lyra">Lyra AI</a></li>
-      <li><a href="projects.html" style="color:var(--neon-blue)">Projects</a></li>
+      <li><a href="#lyra">Lyra AI</a></li>
+      <li><a href="projects.html">Projects</a></li>
     </ul>
   </nav>
 
-  <div class="wrap">
-    <a href="projects.html" class="back-link">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
-      Back to Repository
-    </a>
-    
-    <div class="glass-panel" id="detailPanel">
-      <div class="content-area" id="content">
-        <!-- Rendered via JS -->
+  <!-- Hero immersive -->
+  <header class="hero">
+    <h2 class="hero-title">Experience the<br>Next Dimension</h2>
+    <p class="hero-subtitle">We build playful, experimental tech: AI apps, web platforms, and immersive 3D prototypes. Play. Code. Think.</p>
+    <a href="#lyra" class="btn btn-primary">Discover Lyra</a>
+  </header>
+
+  <!-- Lyra Showcase App -->
+  <section id="lyra" class="lyra-section">
+    <div class="glass-card" id="lyraCard">
+      <div class="lyra-content">
+        <div class="lyra-badge">New Release</div>
+        <h2 class="lyra-title">Meet Lyra</h2>
+        <p class="lyra-desc">Your ultimate AI personal assistant. Designed to streamline your workflow, automate tasks, and adapt to your unique lifestyle. Download now and step into the future.</p>
+        <div class="btn-group">
+          <a href="lyra.apk" download="lyra.apk" class="btn btn-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            Download APK
+          </a>
+        </div>
+      </div>
+      <div class="lyra-visual">
+        <div class="ai-sphere"></div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <footer>© 2026 DeeStudio. Innovation Engineered.</footer>
+  <!-- Featured Projects -->
+  <section class="projects-section">
+    <h2 class="section-title">Featured Creations</h2>
+    <div class="project-grid">
+      <a href="https://princesscollection.it.com" target="_blank" class="project-card">
+        <h3>Princess Collection</h3>
+        <p>Premium fashion e-commerce experience featuring smooth interfaces and immersive catalogs.</p>
+      </a>
+      <a href="https://l2dfinserv.it.com" target="_blank" class="project-card">
+        <h3>L2D Finserv</h3>
+        <p>Corporate finance platform engineered for trust and structured lead capture.</p>
+      </a>
+      <a href="https://www.perlynbeauty.co" target="_blank" class="project-card">
+        <h3>PerlynBeauty</h3>
+        <p>Full-stack beauty marketplace with custom dashboard and automated integrations.</p>
+      </a>
+    </div>
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="projects.html" class="btn btn-secondary">View All Projects</a>
+    </div>
+  </section>
 
+  <footer>
+    © 2026 DeeStudio. All rights reserved. Built for the future.
+  </footer>
+
+  <!-- 3D Scripts & Interactions -->
   <script>
     // --- Mobile Menu Toggle ---
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
-    if (hamburger && navLinks) {
-      hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
       });
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-          hamburger.classList.remove('active');
-          navLinks.classList.remove('active');
-        });
-      });
-    }
-
-    // --- Shared Projects Data ---
-    const PROJECTS = [
-      {
-        id: 'lyra',
-        title: 'Lyra App',
-        desc: 'Lyra is a next-generation AI personal assistant built natively for seamless Android integration. Utilizing advanced LLM logic and optimized local inference, she can automate your workflows, assist with tasks, schedule routines, and dynamically adapt to your unique lifestyle patterns directly on your mobile device.',
-        tags: ['app', 'ai', 'android', 'automation'],
-        url: 'index.html#lyra'
-      },
-      {
-        id: '1',
-        title: 'Princess Collection',
-        desc: 'A sophisticated fashion e-commerce storefront delivering premium shopping experiences. Built with optimized performance logic, dynamic catalogs, immersive visual design, and seamless filtration capabilities across various fashion categories.',
-        tags: ['web', 'shop', 'frontend'],
-        url: 'https://princesscollection.it.com'
-      },
-      {
-        id: '2',
-        title: 'L2D Finserv',
-        desc: 'Secure enterprise financial portal architected for streamlined client lead generation, structural integrity, and high-performance load states during critical B2B engagement.',
-        tags: ['web', 'corporate', 'lead-gen'],
-        url: 'https://l2dfinserv.it.com'
-      },
-      {
-        id: '3',
-        title: 'DeeCryptor',
-        desc: 'An advanced steganography utility converting sensitive text strings into encrypted pixel arrays. Entirely privacy-first, leveraging browser-native HTML5 Canvas algorithms and JS crypto modules for robust security without server-side storage.',
-        tags: ['tool', 'ai', 'cryptography'],
-        url: 'https://deecryptor.onrender.com'
-      },
-      {
-        id: '4',
-        title: 'Perlyn Beauty',
-        desc: 'Commercial beauty marketplace built end-to-end. Integrating Supabase as a robust BaaS, a dynamic discounting engine, live cross-platform review systems, and native PhonePe V2 payments gateway processing. A complete and live commercial product suite.',
-        tags: ['web', 'ecommerce', 'supabase', 'full-stack'],
-        url: 'https://www.perlynbeauty.co'
-      }
-    ];
-
-    function qp(name) { return new URL(location.href).searchParams.get(name); }
-
-    function render(p) {
-      const content = document.getElementById('content');
-      if (!p) {
-        content.innerHTML = `
-          <h1 class="project-title" style="color:var(--text-muted)">404 : Project Unlinked</h1>
-          <p class="desc">The requested module could not be found within the active directory.</p>
-        `;
-        return;
-      }
-
-      const tagsHTML = p.tags.map(t => `<span class="badge">${t}</span>`).join('');
-      
-      let actionBtn = '';
-      if (p.url && p.url !== '#') {
-        const target = p.id === 'lyra' ? '_self' : '_blank';
-        actionBtn = `<a class="btn" href="${p.url}" target="${target}" rel="noreferrer">Initialize System</a>`;
-      } else {
-        actionBtn = `<span class="btn disabled">System Offline</span>`;
-      }
-
-      content.innerHTML = `
-        <h1 class="project-title">${p.title}</h1>
-        <div class="meta-tags">${tagsHTML}</div>
-        <p class="desc">${p.desc}</p>
-        ${actionBtn}
-      `;
-    }
-
-    const id = qp('id');
-    const project = PROJECTS.find(p => String(p.id) === String(id));
-    render(project);
-
-    // --- Interactive 3D Tilt for Detail Card ---
-    const panel = document.getElementById('detailPanel');
-    panel.addEventListener('mousemove', (e) => {
-      const rect = panel.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      const rotateX = (y / (rect.height / 2)) * -4;
-      const rotateY = (x / (rect.width / 2)) * 4;
-      panel.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    });
-    panel.addEventListener('mouseleave', () => {
-      panel.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-      panel.style.transition = 'transform 0.5s ease-out';
-    });
-    panel.addEventListener('mouseenter', () => {
-      panel.style.transition = 'none';
     });
 
-    // --- Three.js Background Script ---
+    // --- Three.js setup for dynamic 3D Background ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // Add subtle fog to blend into the dark background
+    scene.fog = new THREE.FogExp2(0x050510, 0.001);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('webgl-container').appendChild(renderer.domElement);
 
-    const geo = new THREE.BufferGeometry();
-    const count = 600;
-    const pos = new Float32Array(count * 3);
-    for(let i = 0; i < count * 3; i++) {
-        pos[i] = (Math.random() - 0.5) * 600;
-    }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    
-    // Using blue/purple mix
-    const mat = new THREE.PointsMaterial({ size: 2.5, color: 0x00d2ff, opacity: 0.5, transparent: true, blending: THREE.AdditiveBlending });
-    const mesh = new THREE.Points(geo, mat);
-    scene.add(mesh);
-    camera.position.z = 200;
+    // Create a 3D particle network (stars / nodes)
+    const geometry = new THREE.BufferGeometry();
+    const particlesCount = 1500;
+    const posArray = new Float32Array(particlesCount * 3);
 
-    let mx = 0, my = 0;
-    document.addEventListener('mousemove', (e) => {
-        mx = (e.clientX - window.innerWidth/2) * 0.05;
-        my = (e.clientY - window.innerHeight/2) * 0.05;
+    for(let i = 0; i < particlesCount * 3; i++) {
+        // Spread particles out in a vast space
+        posArray[i] = (Math.random() - 0.5) * 1200;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    // Custom material for glowing points
+    const material = new THREE.PointsMaterial({
+        size: 2.5,
+        color: 0x00d2ff,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
     });
+
+    const particlesMesh = new THREE.Points(geometry, material);
+    scene.add(particlesMesh);
+
+    camera.position.z = 400;
+
+    // Mouse tracking for parallax
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX);
+        mouseY = (event.clientY - windowHalfY);
+    });
+
+    const clock = new THREE.Clock();
 
     function animate() {
         requestAnimationFrame(animate);
-        mesh.rotation.x += 0.0005;
-        mesh.rotation.y += 0.001;
+        const elapsedTime = clock.getElapsedTime();
+
+        // Slowly rotate the entire particle system
+        particlesMesh.rotation.y = elapsedTime * 0.05;
+        particlesMesh.rotation.x = elapsedTime * 0.02;
+
+        // Smooth camera movement based on mouse
+        targetX = mouseX * 0.15;
+        targetY = mouseY * 0.15;
         
-        camera.position.x += (mx - camera.position.x) * 0.05;
-        camera.position.y += (-my - camera.position.y) * 0.05;
+        camera.position.x += (targetX - camera.position.x) * 0.02;
+        camera.position.y += (-targetY - camera.position.y) * 0.02;
         camera.lookAt(scene.position);
-        
+
         renderer.render(scene, camera);
     }
     animate();
@@ -399,6 +551,44 @@
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // --- Interactive 3D Card Tilt Effect ---
+    const lyraCard = document.getElementById('lyraCard');
+    
+    lyraCard.addEventListener('mousemove', (e) => {
+      const rect = lyraCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg
+      const rotateY = ((x - centerX) / centerX) * 10;
+      
+      lyraCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    lyraCard.addEventListener('mouseleave', () => {
+      lyraCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+      lyraCard.style.transition = 'transform 0.5s ease-out';
+    });
+    
+    lyraCard.addEventListener('mouseenter', () => {
+      lyraCard.style.transition = 'transform 0.1s ease-out';
+    });
+
+    // Nav blur scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(5, 5, 16, 0.8)';
+        nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+      } else {
+        nav.style.background = 'rgba(5, 5, 16, 0.3)';
+        nav.style.boxShadow = 'none';
+      }
     });
   </script>
 </body>
