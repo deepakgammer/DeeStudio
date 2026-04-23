@@ -2,488 +2,404 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Project Case Study | DEE STUDIO</title>
-  <meta name="description" content="DEE STUDIO project case study covering product context, design focus, technical direction, and business outcome." />
-  <meta property="og:title" content="Project Case Study | DEE STUDIO" />
-  <meta property="og:description" content="A premium product development case study by DEE STUDIO." />
-  <meta property="og:type" content="article" />
-  <meta property="og:image" content="logo.png" />
-  <link rel="icon" href="logo.png" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project Details — DeeStudio</title>
+
+  <!-- Modern Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Three.js for 3D Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <style>
     :root {
-      --bg: #06070a;
-      --panel: #0d1017;
-      --line: rgba(255,255,255,.1);
-      --text: #f6f7fb;
-      --muted: #a5adba;
-      --soft: #d8dde7;
-      --blue: #6aa8ff;
-      --cyan: #69e5ff;
-      --green: #9ff2c3;
-      --shadow: 0 24px 80px rgba(0,0,0,.38);
-      --max: 1080px;
+      --bg: #050510;
+      --neon-blue: #00d2ff;
+      --neon-purple: #9d00ff;
+      --text-main: #f0f4f8;
+      --text-muted: #8b9bb4;
+      --glass-bg: rgba(15, 15, 30, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: rgba(0, 0, 0, 0.5);
     }
-    * { box-sizing: border-box; }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      margin: 0;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 14% 0%, rgba(106,168,255,.15), transparent 30rem),
-        linear-gradient(180deg, #050609, #090b10 55%, #06070a);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.58;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-    .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
-
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(6,7,10,.76);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-inner {
-      height: 76px;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+      flex-direction: column;
+      min-height: 100vh;
     }
-    .brand {
+
+    #webgl-container {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1; pointer-events: none;
+    }
+
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 5%; background: rgba(5, 5, 16, 0.3);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+    
+    .nav-brand {
+      display: flex; align-items: center; gap: 1rem; text-decoration: none;
+    }
+    .nav-brand h1 {
+      font-weight: 800; font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--text-main), var(--neon-blue));
+      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 600; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
+
+    .wrap {
+      padding: 10rem 5% 5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      flex: 1;
+      width: 100%;
+    }
+
+    .back-link {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 820;
-      letter-spacing: .08em;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
     }
-    .brand img {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
+    .back-link:hover {
+      color: var(--neon-blue);
+      border-color: var(--neon-blue);
+      background: rgba(0, 210, 255, 0.05);
+      transform: translateX(-5px);
     }
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 650;
-    }
-    .nav-links a:hover { color: var(--text); }
 
-    .hero {
-      padding: 72px 0 44px;
-      border-bottom: 1px solid var(--line);
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 20px;
+      padding: 4rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      animation: liftUp 0.6s ease-out;
     }
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 34px;
+
+    @keyframes liftUp {
+      from { opacity: 0; transform: translateY(40px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .back:hover { color: var(--text); }
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 12px;
-      font-weight: 760;
-      letter-spacing: .16em;
-      text-transform: uppercase;
+
+    .glass-panel::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(157,0,255,0.05) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
     }
-    h1 {
-      margin: 12px 0 16px;
-      font-size: clamp(42px, 7vw, 76px);
-      line-height: .98;
-      letter-spacing: -.055em;
+
+    .content-area {
+      position: relative;
+      z-index: 2;
     }
-    .lead {
-      max-width: 780px;
-      margin: 0;
-      color: var(--soft);
-      font-size: 19px;
+
+    h1.project-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
     }
-    .hero-actions {
+
+    .meta-tags {
       display: flex;
-      gap: 12px;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
-      margin-top: 30px;
     }
+
+    .badge {
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid var(--neon-blue);
+      color: var(--neon-blue);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .desc {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
     .btn {
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 18px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      font-weight: 760;
-      font-size: 14px;
-      background: rgba(255,255,255,.04);
-    }
-    .btn.primary {
-      color: #071018;
-      background: linear-gradient(135deg, #f8fbff, #9ec6ff);
-      border: 0;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(157, 0, 255, 0.4);
+      border: none;
+      cursor: pointer;
     }
 
-    main { padding: 52px 0 80px; }
-    .summary {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 42px;
+    .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 210, 255, 0.6);
     }
-    .summary-card {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255,255,255,.04);
-    }
-    .summary-card span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-    .summary-card strong { color: var(--soft); font-size: 14px; }
 
-    .visual {
-      height: 420px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      background: #0a0d13;
-      box-shadow: var(--shadow);
-      margin-bottom: 48px;
+    .btn.disabled {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      border: 1px solid var(--glass-border);
     }
-    .mock {
-      height: 100%;
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 18px;
-      background: linear-gradient(145deg, #111827, #07090d);
-      padding: 18px;
-      display: grid;
-      grid-template-rows: 38px 1fr;
-      gap: 16px;
-    }
-    .mock-head {
-      border-radius: 10px;
-      background: rgba(255,255,255,.075);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 12px;
-    }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #6b7280; }
-    .mock-body { display: grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }
-    .mock-block {
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.055);
-    }
-    .mock-stack { display: grid; gap: 14px; }
-    .accent { background: linear-gradient(135deg, rgba(106,168,255,.28), rgba(105,229,255,.08)); }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: 260px minmax(0, 1fr);
-      gap: 48px;
-      align-items: start;
-    }
-    .side {
-      position: sticky;
-      top: 100px;
-      display: grid;
-      gap: 10px;
-    }
-    .side a {
-      color: var(--muted);
-      font-size: 14px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .side a:hover { color: var(--text); }
-    .case-section {
-      padding-bottom: 40px;
-      margin-bottom: 40px;
-      border-bottom: 1px solid var(--line);
-    }
-    .case-section h2 {
-      margin: 0 0 14px;
-      font-size: clamp(28px, 4vw, 42px);
-      letter-spacing: -.04em;
-      line-height: 1.08;
-    }
-    .case-section p {
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: 17px;
-    }
-    .list {
-      display: grid;
-      gap: 12px;
-      padding: 0;
-      margin: 20px 0 0;
-      list-style: none;
-    }
-    .list li {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.035);
-      color: var(--soft);
-    }
-    .cta {
-      padding: 38px;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(106,168,255,.16), rgba(255,255,255,.025));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-    .cta h2 { margin: 0 0 8px; font-size: 34px; letter-spacing: -.04em; line-height: 1.06; }
-    .cta p { margin: 0; color: var(--muted); }
+    .btn.disabled:hover { transform: none; }
 
     footer {
-      border-top: 1px solid var(--line);
-      padding: 34px 0;
-      color: var(--muted);
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
     }
-    .footer-grid {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; }
-    .footer-links a:hover { color: var(--text); }
 
-    @media (max-width: 840px) {
-      .summary, .content-grid { grid-template-columns: 1fr; }
-      .summary { gap: 10px; }
-      .side { position: static; grid-template-columns: repeat(2, 1fr); }
-      .mock-body { grid-template-columns: 1fr; }
-      .visual { height: 360px; }
-      .cta { flex-direction: column; align-items: flex-start; }
-    }
-    @media (max-width: 620px) {
-      .container { padding: 0 18px; }
-      .nav-inner { height: auto; padding: 16px 0; align-items: flex-start; flex-direction: column; }
-      .nav-links { gap: 14px; flex-wrap: wrap; }
-      .hero { padding: 54px 0 36px; }
-      .visual { height: 300px; padding: 14px; }
-      .side { grid-template-columns: 1fr; }
-      .cta { padding: 26px; }
+    .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 101; }
+    .hamburger span { width: 30px; height: 3px; background: var(--text-main); border-radius: 5px; transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%; height: 100vh; width: 100%;
+        background: rgba(5, 5, 16, 0.98); backdrop-filter: blur(20px);
+        flex-direction: column; justify-content: center; align-items: center;
+        transition: right 0.4s cubic-bezier(0.77, 0.2, 0.05, 1); padding: 2rem;
+      }
+      .nav-links.active { right: 0; }
+      .nav-links li { margin: 1.5rem 0; }
+      .nav-links a { font-size: 1.8rem; }
+      .glass-panel { padding: 2.5rem 1.5rem; }
+      h1.project-title { font-size: 2.5rem; }
+      .wrap { padding: 8rem 1.5rem 4rem; }
+      .nav-brand h1 { font-size: 1.2rem; }
     }
   </style>
 </head>
 <body>
-  <nav class="nav" aria-label="Primary navigation">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html"><img src="logo.png" alt="DEE STUDIO logo" /><span>DEE STUDIO</span></a>
-      <div class="nav-links">
-        <a href="index.html#services">Services</a>
-        <a href="projects.html">Case studies</a>
-        <a href="index.html#why">Why us</a>
-        <a href="index.html#contact">Contact</a>
-      </div>
+
+  <div id="webgl-container"></div>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <h1>DEESTUDIO</h1>
+    </a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
     </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#lyra">Lyra AI</a></li>
+      <li><a href="projects.html" style="color:var(--neon-blue)">Projects</a></li>
+    </ul>
   </nav>
 
-  <header class="hero">
-    <div class="container">
-      <a class="back" href="projects.html">&larr; Back to case studies</a>
-      <div class="eyebrow" id="kicker">Case Study</div>
-      <h1 id="title">Project Case Study</h1>
-      <p class="lead" id="lead">A DEE STUDIO product build focused on premium UX, practical engineering, and business-ready execution.</p>
-      <div class="hero-actions" id="actions"></div>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <section class="summary" aria-label="Project summary" id="summary"></section>
-
-      <section class="visual" aria-label="Project interface preview">
-        <div class="mock">
-          <div class="mock-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-          <div class="mock-body">
-            <div class="mock-block accent"></div>
-            <div class="mock-stack">
-              <div class="mock-block"></div>
-              <div class="mock-block"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="content-grid">
-        <aside class="side" aria-label="Case study sections">
-          <a href="#context">Context</a>
-          <a href="#approach">Approach</a>
-          <a href="#systems">Systems</a>
-          <a href="#outcome">Outcome</a>
-        </aside>
-
-        <article>
-          <section class="case-section" id="context">
-            <h2>Context</h2>
-            <p id="contextText"></p>
-          </section>
-
-          <section class="case-section" id="approach">
-            <h2>Design and product approach</h2>
-            <p id="approachText"></p>
-            <ul class="list" id="approachList"></ul>
-          </section>
-
-          <section class="case-section" id="systems">
-            <h2>Technical systems</h2>
-            <p id="systemsText"></p>
-            <ul class="list" id="systemsList"></ul>
-          </section>
-
-          <section class="case-section" id="outcome">
-            <h2>Business outcome</h2>
-            <p id="outcomeText"></p>
-          </section>
-
-          <section class="cta">
-            <div>
-              <h2>Build something with the same level of care.</h2>
-              <p>DEE STUDIO works on AI applications, web platforms, automation systems, and full-stack product launches.</p>
-            </div>
-            <a class="btn primary" href="mailto:hello@deestudio.com?subject=Project%20inquiry%20for%20DEE%20STUDIO">Contact studio</a>
-          </section>
-        </article>
+  <div class="wrap">
+    <a href="projects.html" class="back-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Repository
+    </a>
+    
+    <div class="glass-panel" id="detailPanel">
+      <div class="content-area" id="content">
+        <!-- Rendered via JS -->
       </div>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <div class="container footer-grid">
-      <a class="brand" href="index.html"><img src="logo.png" alt="" /><span>DEE STUDIO</span></a>
-      <div class="footer-links">
-        <a href="index.html#services">Services</a>
-        <a href="projects.html">Case studies</a>
-        <a href="index.html#contact">Contact</a>
-        <a href="mailto:hello@deestudio.com">hello@deestudio.com</a>
-      </div>
-      <div>&copy; 2026 DEE STUDIO. All rights reserved.</div>
-    </div>
-  </footer>
+  <footer>© 2026 DeeStudio. Innovation Engineered.</footer>
 
   <script>
-    const CASES = {
-      princess: {
-        kicker: 'Premium Commerce',
-        title: 'Princess Collection',
-        lead: 'A premium fashion commerce experience designed around product discovery, elegant browsing, and a more credible storefront presentation.',
-        category: 'E-commerce',
-        focus: 'Catalog UX',
-        stack: 'Frontend',
-        status: 'Live',
-        url: 'https://princesscollection.it.com',
-        context: 'The project needed to present fashion products with more polish than a basic storefront. The experience had to support browsing confidence, product clarity, and a luxury-oriented visual direction.',
-        approach: 'The interface direction emphasizes clean hierarchy, generous spacing, strong product framing, and a shopping journey that feels intentional instead of template-driven.',
-        approachList: ['Editorial-style presentation for premium perception', 'Clear category and product discovery paths', 'Responsive layout patterns for mobile shoppers'],
-        systems: 'The build focuses on frontend structure, catalog presentation, performance awareness, and a maintainable interface foundation.',
-        systemsList: ['Product listing and discovery UI', 'Responsive commerce layout', 'Conversion-focused page structure'],
-        outcome: 'The result is a sharper commercial presence that gives the brand a more premium digital storefront and a clearer path for product-led conversion.'
-      },
-      l2d: {
-        kicker: 'Financial Services',
-        title: 'L2D Finserv',
-        lead: 'A corporate finance platform shaped around trust, clear service communication, and structured lead generation.',
-        category: 'Fintech',
-        focus: 'Trust UX',
-        stack: 'Web platform',
-        status: 'Live',
-        url: 'https://l2dfinserv.it.com',
-        context: 'Financial-service websites must communicate credibility quickly. The platform needed to feel structured, professional, and easy for qualified leads to understand.',
-        approach: 'The product direction favors clarity over noise: direct service messaging, serious visual hierarchy, and interface patterns that support confidence.',
-        approachList: ['Trust-first service presentation', 'Lead capture paths for high-intent users', 'Corporate visual tone suitable for finance audiences'],
-        systems: 'The platform combines content structure, lead routing intent, responsive pages, and professional frontend implementation.',
-        systemsList: ['Service information architecture', 'Lead-focused conversion structure', 'Responsive corporate website patterns'],
-        outcome: 'The result is a more credible finance-facing digital platform that supports client acquisition and presents the business with professional authority.'
-      },
-      deecryptor: {
-        kicker: 'Privacy Tool',
-        title: 'DeeCryptor',
-        lead: 'A browser-first privacy utility concept for converting sensitive text into encrypted pixel arrays using local processing.',
-        category: 'Tooling',
-        focus: 'Privacy',
-        stack: 'Web utility',
-        status: 'Live',
-        url: 'https://deecryptor.onrender.com',
-        context: 'The product needed to explain a technical privacy concept in a usable way while keeping the experience direct and understandable for non-expert users.',
-        approach: 'The interface is designed around a focused task flow: enter sensitive text, process it locally, and produce an output that communicates security without overwhelming the user.',
-        approachList: ['Single-purpose utility flow', 'Privacy-first messaging and interaction structure', 'Simple controls for a complex technical concept'],
-        systems: 'The technical direction centers on browser-native capabilities, local processing, and a lightweight web tool architecture.',
-        systemsList: ['Client-side processing model', 'Canvas-based output concept', 'Lightweight deployment footprint'],
-        outcome: 'The result is a focused proof of capability for privacy-oriented product tooling and technical interface design.'
-      },
-      perlyn: {
-        kicker: 'Full-Stack Marketplace',
-        title: 'Perlyn Beauty',
-        lead: 'A beauty marketplace system with product operations, customer flows, promotional logic, reviews, and payment integration.',
-        category: 'Marketplace',
-        focus: 'Operations',
-        stack: 'Full-stack',
-        status: 'Live',
-        url: 'https://www.perlynbeauty.co',
-        context: 'The project required more than a storefront. It needed a practical commercial system for products, customers, promotions, payment flow, and operational management.',
-        approach: 'The experience balances consumer-facing polish with backend practicality, giving the business a platform that can support real marketplace operations.',
-        approachList: ['Commerce flows designed for customer clarity', 'Operational structure for managing products and offers', 'Review and trust signals to support buying confidence'],
-        systems: 'The build connects frontend commerce UX with backend services, data management, review logic, discounting, and payment integration.',
-        systemsList: ['Supabase-backed product and data flows', 'Dynamic discount and offer logic', 'PhonePe V2 payment integration'],
-        outcome: 'The result is a complete commercial product system with both user-facing polish and operational depth.'
-      }
-    };
-
-    function escapeHTML(value) {
-      return String(value).replace(/[&<>"']/g, (char) => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[char]));
+    // --- Mobile Menu Toggle ---
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const selected = CASES[params.get('id')] || CASES.princess;
+    // --- Shared Projects Data ---
+    const PROJECTS = [
+      {
+        id: 'lyra',
+        title: 'Lyra App',
+        desc: 'Lyra is a next-generation AI personal assistant built natively for seamless Android integration. Utilizing advanced LLM logic and optimized local inference, she can automate your workflows, assist with tasks, schedule routines, and dynamically adapt to your unique lifestyle patterns directly on your mobile device.',
+        tags: ['app', 'ai', 'android', 'automation'],
+        url: 'index.html#lyra'
+      },
+      {
+        id: '1',
+        title: 'Princess Collection',
+        desc: 'A sophisticated fashion e-commerce storefront delivering premium shopping experiences. Built with optimized performance logic, dynamic catalogs, immersive visual design, and seamless filtration capabilities across various fashion categories.',
+        tags: ['web', 'shop', 'frontend'],
+        url: 'https://princesscollection.it.com'
+      },
+      {
+        id: '2',
+        title: 'L2D Finserv',
+        desc: 'Secure enterprise financial portal architected for streamlined client lead generation, structural integrity, and high-performance load states during critical B2B engagement.',
+        tags: ['web', 'corporate', 'lead-gen'],
+        url: 'https://l2dfinserv.it.com'
+      },
+      {
+        id: '3',
+        title: 'DeeCryptor',
+        desc: 'An advanced steganography utility converting sensitive text strings into encrypted pixel arrays. Entirely privacy-first, leveraging browser-native HTML5 Canvas algorithms and JS crypto modules for robust security without server-side storage.',
+        tags: ['tool', 'ai', 'cryptography'],
+        url: 'https://deecryptor.onrender.com'
+      },
+      {
+        id: '4',
+        title: 'Perlyn Beauty',
+        desc: 'Commercial beauty marketplace built end-to-end. Integrating Supabase as a robust BaaS, a dynamic discounting engine, live cross-platform review systems, and native PhonePe V2 payments gateway processing. A complete and live commercial product suite.',
+        tags: ['web', 'ecommerce', 'supabase', 'full-stack'],
+        url: 'https://www.perlynbeauty.co'
+      }
+    ];
 
-    document.title = `${selected.title} Case Study | DEE STUDIO`;
-    document.getElementById('kicker').textContent = selected.kicker;
-    document.getElementById('title').textContent = selected.title;
-    document.getElementById('lead').textContent = selected.lead;
-    document.getElementById('contextText').textContent = selected.context;
-    document.getElementById('approachText').textContent = selected.approach;
-    document.getElementById('systemsText').textContent = selected.systems;
-    document.getElementById('outcomeText').textContent = selected.outcome;
-    document.getElementById('summary').innerHTML = `
-      <div class="summary-card"><span>Category</span><strong>${escapeHTML(selected.category)}</strong></div>
-      <div class="summary-card"><span>Focus</span><strong>${escapeHTML(selected.focus)}</strong></div>
-      <div class="summary-card"><span>Build</span><strong>${escapeHTML(selected.stack)}</strong></div>
-      <div class="summary-card"><span>Status</span><strong>${escapeHTML(selected.status)}</strong></div>
-    `;
-    document.getElementById('actions').innerHTML = `
-      <a class="btn primary" href="${escapeHTML(selected.url)}" target="_blank" rel="noreferrer">Visit live project</a>
-      <a class="btn" href="projects.html">View all case studies</a>
-    `;
-    document.getElementById('approachList').innerHTML = selected.approachList.map((item) => `<li>${escapeHTML(item)}</li>`).join('');
-    document.getElementById('systemsList').innerHTML = selected.systemsList.map((item) => `<li>${escapeHTML(item)}</li>`).join('');
+    function qp(name) { return new URL(location.href).searchParams.get(name); }
+
+    function render(p) {
+      const content = document.getElementById('content');
+      if (!p) {
+        content.innerHTML = `
+          <h1 class="project-title" style="color:var(--text-muted)">404 : Project Unlinked</h1>
+          <p class="desc">The requested module could not be found within the active directory.</p>
+        `;
+        return;
+      }
+
+      const tagsHTML = p.tags.map(t => `<span class="badge">${t}</span>`).join('');
+      
+      let actionBtn = '';
+      if (p.url && p.url !== '#') {
+        const target = p.id === 'lyra' ? '_self' : '_blank';
+        actionBtn = `<a class="btn" href="${p.url}" target="${target}" rel="noreferrer">Initialize System</a>`;
+      } else {
+        actionBtn = `<span class="btn disabled">System Offline</span>`;
+      }
+
+      content.innerHTML = `
+        <h1 class="project-title">${p.title}</h1>
+        <div class="meta-tags">${tagsHTML}</div>
+        <p class="desc">${p.desc}</p>
+        ${actionBtn}
+      `;
+    }
+
+    const id = qp('id');
+    const project = PROJECTS.find(p => String(p.id) === String(id));
+    render(project);
+
+    // --- Interactive 3D Tilt for Detail Card ---
+    const panel = document.getElementById('detailPanel');
+    panel.addEventListener('mousemove', (e) => {
+      const rect = panel.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotateX = (y / (rect.height / 2)) * -4;
+      const rotateY = (x / (rect.width / 2)) * 4;
+      panel.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    panel.addEventListener('mouseleave', () => {
+      panel.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+      panel.style.transition = 'transform 0.5s ease-out';
+    });
+    panel.addEventListener('mouseenter', () => {
+      panel.style.transition = 'none';
+    });
+
+    // --- Three.js Background Script ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+    const geo = new THREE.BufferGeometry();
+    const count = 600;
+    const pos = new Float32Array(count * 3);
+    for(let i = 0; i < count * 3; i++) {
+        pos[i] = (Math.random() - 0.5) * 600;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    
+    // Using blue/purple mix
+    const mat = new THREE.PointsMaterial({ size: 2.5, color: 0x00d2ff, opacity: 0.5, transparent: true, blending: THREE.AdditiveBlending });
+    const mesh = new THREE.Points(geo, mat);
+    scene.add(mesh);
+    camera.position.z = 200;
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', (e) => {
+        mx = (e.clientX - window.innerWidth/2) * 0.05;
+        my = (e.clientY - window.innerHeight/2) * 0.05;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        mesh.rotation.x += 0.0005;
+        mesh.rotation.y += 0.001;
+        
+        camera.position.x += (mx - camera.position.x) * 0.05;
+        camera.position.y += (-my - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+        
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   </script>
 </body>
 </html>
