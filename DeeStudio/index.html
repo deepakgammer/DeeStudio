@@ -3,67 +3,141 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DEE STUDIO | AI Apps, Web Platforms & Automation</title>
-  <meta name="description" content="DEE STUDIO designs and builds AI applications, modern web platforms, automation systems, and production-ready digital products for ambitious teams." />
-  <meta name="keywords" content="DEE STUDIO, AI apps, web platforms, automation, product development, software studio, startup technology" />
+  <title>DEE STUDIO | Futuristic AI Apps, Websites, Mobile Apps & Automation</title>
+  <meta name="description" content="DEE STUDIO is a premium technology studio building AI apps, websites, mobile apps, automation systems, startup MVPs, and futuristic digital products." />
+  <meta name="keywords" content="DEE STUDIO, AI apps, websites, mobile apps, automation systems, startup MVPs, product development, futuristic web design" />
   <meta name="author" content="DEE STUDIO" />
-  <meta property="og:title" content="DEE STUDIO | AI Apps, Web Platforms & Automation" />
-  <meta property="og:description" content="A premium technology studio building AI applications, web platforms, automation systems, and product experiences for modern companies." />
+  <meta property="og:title" content="DEE STUDIO | We Build The Future Digitally" />
+  <meta property="og:description" content="Premium technology studio for AI apps, websites, mobile apps, automation systems, and next-generation digital products." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="logo.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="logo.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
-      --bg: #06070a;
-      --panel: #0d1017;
-      --panel-2: #111622;
-      --line: rgba(255,255,255,.1);
-      --line-strong: rgba(255,255,255,.18);
-      --text: #f6f7fb;
-      --muted: #a5adba;
-      --soft: #d8dde7;
-      --blue: #6aa8ff;
-      --cyan: #69e5ff;
-      --green: #9ff2c3;
-      --gold: #e7c878;
-      --shadow: 0 24px 80px rgba(0,0,0,.38);
-      --radius: 18px;
-      --max: 1180px;
+      --bg: #03050a;
+      --bg-2: #070a12;
+      --glass: rgba(12, 18, 31, .56);
+      --glass-2: rgba(255, 255, 255, .055);
+      --line: rgba(255, 255, 255, .12);
+      --line-strong: rgba(126, 196, 255, .36);
+      --text: #f7fbff;
+      --muted: #9ba7bb;
+      --soft: #dbe7f7;
+      --blue: #54b8ff;
+      --blue-2: #88dcff;
+      --purple: #8d7cff;
+      --shadow: 0 30px 100px rgba(0, 0, 0, .48);
+      --max: 1200px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(106,168,255,.16), transparent 32rem),
-        radial-gradient(circle at 80% 10%, rgba(105,229,255,.08), transparent 28rem),
-        linear-gradient(180deg, #050609 0%, #090b10 52%, #06070a 100%);
+      min-height: 100vh;
       color: var(--text);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(84, 184, 255, .22), transparent 30rem),
+        radial-gradient(circle at 80% 8%, rgba(141, 124, 255, .16), transparent 28rem),
+        linear-gradient(180deg, #02030a 0%, #050813 44%, #03050a 100%);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.55;
       overflow-x: hidden;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 20%, black, transparent 68%);
+    }
+
     a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
     img { max-width: 100%; display: block; }
     .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 12px;
-      font-weight: 750;
-      letter-spacing: .16em;
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      background: #02030a;
+      transition: opacity .65s ease, visibility .65s ease;
+    }
+
+    #loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-card {
+      display: grid;
+      gap: 18px;
+      place-items: center;
+      color: var(--soft);
+      letter-spacing: .18em;
       text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .loader-core {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 1px solid rgba(136,220,255,.45);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(136,220,255,.9), rgba(84,184,255,.28) 34%, transparent 68%);
+      box-shadow: 0 0 28px rgba(84,184,255,.75), 0 0 90px rgba(141,124,255,.4);
+      animation: loaderPulse 1.45s ease-in-out infinite alternate;
+    }
+
+    @keyframes loaderPulse {
+      from { transform: scale(.92); opacity: .72; }
+      to { transform: scale(1.08); opacity: 1; }
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+    }
+
+    .glow-trail {
+      position: fixed;
+      width: 360px;
+      height: 360px;
+      left: 0;
+      top: 0;
+      z-index: -2;
+      pointer-events: none;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(84,184,255,.13), rgba(141,124,255,.055) 38%, transparent 70%);
+      transform: translate3d(-50%, -50%, 0);
+      filter: blur(10px);
+      opacity: .85;
     }
 
     .nav {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 20;
+      left: 0;
+      width: 100%;
+      z-index: 40;
       border-bottom: 1px solid rgba(255,255,255,.08);
-      background: rgba(6,7,10,.74);
-      backdrop-filter: blur(18px);
+      background: rgba(3, 5, 10, .56);
+      backdrop-filter: blur(22px);
     }
 
     .nav-inner {
@@ -78,15 +152,16 @@
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-weight: 820;
-      letter-spacing: .08em;
+      font-weight: 900;
+      letter-spacing: .1em;
     }
 
     .brand img {
       width: 38px;
       height: 38px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--line);
+      box-shadow: 0 0 24px rgba(84,184,255,.18);
     }
 
     .nav-links {
@@ -95,71 +170,101 @@
       gap: 26px;
       color: var(--muted);
       font-size: 14px;
-      font-weight: 650;
+      font-weight: 720;
     }
 
+    .nav-links a { transition: color .24s ease; }
     .nav-links a:hover { color: var(--text); }
 
-    .nav-cta, .btn {
+    .nav-cta,
+    .btn {
+      min-height: 46px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
+      padding: 0 20px;
       border-radius: 999px;
-      font-weight: 760;
+      border: 1px solid var(--line);
       font-size: 14px;
-      border: 1px solid var(--line-strong);
-      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+      font-weight: 820;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
     }
 
-    .nav-cta {
-      color: #071018;
-      background: linear-gradient(135deg, #f8fbff, #b9d6ff);
-      border: 0;
-    }
-
+    .nav-cta,
     .btn-primary {
-      color: #071018;
-      background: linear-gradient(135deg, #f8fbff, #9ec6ff);
+      color: #03111e;
       border: 0;
-      box-shadow: 0 14px 42px rgba(106,168,255,.22);
+      background: linear-gradient(135deg, #ffffff 0%, #8bd8ff 48%, #6f8dff 100%);
+      box-shadow: 0 14px 44px rgba(84,184,255,.28);
     }
 
     .btn-secondary {
       color: var(--text);
-      background: rgba(255,255,255,.045);
+      background: rgba(255,255,255,.055);
+      backdrop-filter: blur(14px);
     }
 
-    .btn:hover, .nav-cta:hover { transform: translateY(-2px); }
-    .btn-secondary:hover { border-color: rgba(255,255,255,.34); background: rgba(255,255,255,.08); }
+    .btn:hover,
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: 0 16px 50px rgba(84,184,255,.24);
+    }
 
-    .menu-btn { display: none; }
+    .menu {
+      display: none;
+      width: 44px;
+      height: 44px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.055);
+    }
 
     .hero {
-      padding: 104px 0 72px;
+      min-height: 100vh;
+      padding: 132px 0 88px;
+      display: grid;
+      align-items: center;
       position: relative;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.04fr) minmax(320px, .96fr);
-      gap: 58px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 54px;
       align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--blue-2);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .18em;
+      text-transform: uppercase;
     }
 
     h1 {
       margin: 16px 0 22px;
-      max-width: 800px;
-      font-size: clamp(44px, 7vw, 84px);
-      line-height: .96;
-      letter-spacing: -.055em;
+      max-width: 850px;
+      font-size: clamp(48px, 8vw, 98px);
+      line-height: .9;
+      letter-spacing: -.07em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(120deg, #fff 5%, #d8f5ff 36%, #6bc3ff 64%, #9e92ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 70px rgba(84,184,255,.16);
     }
 
     .hero-copy {
-      max-width: 660px;
+      max-width: 670px;
+      margin: 0;
       color: var(--soft);
-      font-size: 19px;
+      font-size: 20px;
     }
 
     .hero-actions {
@@ -169,259 +274,549 @@
       margin-top: 34px;
     }
 
-    .hero-meta {
+    .hero-stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-top: 42px;
-      max-width: 680px;
+      margin-top: 44px;
     }
 
-    .metric {
+    .stat {
       padding: 18px;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.035);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.028));
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.22);
     }
 
-    .metric strong { display: block; font-size: 24px; letter-spacing: -.03em; }
-    .metric span { color: var(--muted); font-size: 13px; }
-
-    .hero-visual {
-      min-height: 540px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.025));
-      box-shadow: var(--shadow);
-      padding: 18px;
-      transform: translateZ(0);
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      letter-spacing: -.04em;
     }
 
-    .studio-board {
-      height: 100%;
-      border-radius: 20px;
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero-panel {
+      min-height: 560px;
+      border: 1px solid var(--line-strong);
+      border-radius: 32px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.035)),
+        radial-gradient(circle at 50% 10%, rgba(84,184,255,.22), transparent 45%);
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.05);
+      backdrop-filter: blur(20px);
+      position: relative;
       overflow: hidden;
-      background: #0a0d13;
-      border: 1px solid rgba(255,255,255,.1);
-      display: grid;
-      grid-template-rows: auto 1fr;
+      transform-style: preserve-3d;
     }
 
-    .board-top {
-      height: 48px;
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at 50% 46%, black, transparent 72%);
+    }
+
+    .core-label {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+      z-index: 2;
       display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 16px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,.035);
-    }
-
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: #5e6673; }
-    .dot:nth-child(1) { background: #f07878; }
-    .dot:nth-child(2) { background: #e7c878; }
-    .dot:nth-child(3) { background: #7bd99f; }
-
-    .board-body {
-      padding: 22px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .module {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+      justify-content: space-between;
+      gap: 20px;
       padding: 18px;
-      min-height: 132px;
-      animation: floatIn .75s ease both;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(3,5,10,.54);
+      backdrop-filter: blur(18px);
     }
 
-    .module:nth-child(2) { animation-delay: .08s; }
-    .module:nth-child(3) { animation-delay: .14s; }
-    .module:nth-child(4) { animation-delay: .2s; }
-    .module.wide { grid-column: 1 / -1; min-height: 148px; }
-    .module-label { color: var(--muted); font-size: 12px; font-weight: 720; text-transform: uppercase; letter-spacing: .12em; }
-    .module h3 { margin: 12px 0 8px; font-size: 22px; letter-spacing: -.03em; }
-    .module p { margin: 0; color: var(--muted); font-size: 14px; }
-    .bars { display: grid; gap: 10px; margin-top: 20px; }
-    .bar { height: 9px; border-radius: 20px; background: rgba(255,255,255,.08); overflow: hidden; }
-    .bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+    .core-label strong { display: block; }
+    .core-label span { color: var(--muted); font-size: 13px; }
 
-    section { padding: 76px 0; }
+    .core-orb {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      left: 50%;
+      top: 44%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 38% 28%, #ffffff, #8be2ff 12%, rgba(84,184,255,.32) 38%, transparent 68%),
+        radial-gradient(circle, rgba(141,124,255,.5), transparent 64%);
+      box-shadow: 0 0 45px rgba(84,184,255,.78), 0 0 130px rgba(141,124,255,.38);
+      filter: saturate(1.12);
+      animation: orbFloat 5.4s ease-in-out infinite;
+    }
+
+    .ring {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      left: 50%;
+      top: 44%;
+      border-radius: 50%;
+      border: 1px solid rgba(136,220,255,.26);
+      transform: translate(-50%, -50%) rotateX(72deg) rotateZ(0deg);
+      animation: ringSpin 12s linear infinite;
+    }
+
+    .ring:nth-child(2) {
+      width: 470px;
+      height: 470px;
+      border-color: rgba(141,124,255,.22);
+      animation-duration: 18s;
+      animation-direction: reverse;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(-50%, -52%) scale(1); }
+      50% { transform: translate(-50%, -47%) scale(1.035); }
+    }
+
+    @keyframes ringSpin {
+      to { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg); }
+    }
+
+    section {
+      padding: 96px 0;
+      position: relative;
+    }
+
     .section-head {
-      max-width: 720px;
-      margin-bottom: 34px;
+      max-width: 760px;
+      margin-bottom: 38px;
     }
 
     .section-head h2 {
-      margin: 10px 0 12px;
-      font-size: clamp(32px, 5vw, 54px);
-      line-height: 1.02;
-      letter-spacing: -.045em;
+      margin: 12px 0 14px;
+      font-size: clamp(34px, 5vw, 60px);
+      line-height: .98;
+      letter-spacing: -.055em;
     }
 
-    .section-head p { color: var(--muted); font-size: 17px; margin: 0; }
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
 
-    .services {
+    .about-grid {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.03));
+      box-shadow: 0 24px 80px rgba(0,0,0,.28);
+      backdrop-filter: blur(18px);
+    }
+
+    .story {
+      padding: 34px;
+    }
+
+    .story p {
+      color: var(--soft);
+      font-size: 18px;
+      margin: 0 0 18px;
+    }
+
+    .mission-board {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .mission-row {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .mission-row span {
+      color: var(--blue-2);
+      font-weight: 900;
+      letter-spacing: .12em;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .mission-row strong { font-size: 18px; }
+
+    .build-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .build-card {
+      min-height: 260px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(84,184,255,.16), transparent 54%),
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.028));
+      backdrop-filter: blur(16px);
+      transition: transform .28s ease, border-color .28s ease, background .28s ease;
+    }
+
+    .build-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--line-strong);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(84,184,255,.24), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.035));
+    }
+
+    .build-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 42px;
+      border-radius: 15px;
+      background: rgba(84,184,255,.14);
+      border: 1px solid rgba(84,184,255,.28);
+      color: var(--blue-2);
+      font-weight: 900;
+    }
+
+    .build-card h3,
+    .project-card h3,
+    .why-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing: -.035em;
+    }
+
+    .build-card p,
+    .project-card p,
+    .why-card p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      perspective: 1200px;
+    }
+
+    .project-card {
+      min-height: 440px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      transform-style: preserve-3d;
+      transition: transform .28s ease, border-color .28s ease;
+      overflow: hidden;
+    }
+
+    .project-card:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-8px) rotateX(4deg) rotateY(-4deg);
+    }
+
+    .project-shot {
+      height: 210px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: #080c14;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .shot-bar {
+      height: 28px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .shot-main {
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(84,184,255,.22), rgba(141,124,255,.12));
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .shot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .shot-tile {
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .project-tag {
+      display: inline-flex;
+      margin-bottom: 12px;
+      color: var(--blue-2);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .lyra-panel {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 28px;
+      align-items: center;
+      padding: 38px;
+      border: 1px solid var(--line-strong);
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 78% 28%, rgba(84,184,255,.22), transparent 36%),
+        linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .phone-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 560px;
+      position: relative;
+    }
+
+    .phone-wrap::before {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(84,184,255,.26), transparent 68%);
+      filter: blur(18px);
+    }
+
+    .phone {
+      width: min(290px, 76vw);
+      aspect-ratio: 9 / 18.5;
+      padding: 12px;
+      border-radius: 38px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: linear-gradient(145deg, #1b2434, #05070c 58%);
+      box-shadow: 0 30px 100px rgba(0,0,0,.58), 0 0 60px rgba(84,184,255,.22);
+      position: relative;
+      transform: rotateY(-14deg) rotateX(6deg);
+      transform-style: preserve-3d;
+    }
+
+    .phone-screen {
+      height: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(84,184,255,.35), transparent 28%),
+        linear-gradient(180deg, #07111f, #03050a);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 18px;
+    }
+
+    .phone-top {
+      display: flex;
+      justify-content: space-between;
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .ai-pulse {
+      align-self: center;
+      justify-self: center;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff, #85ddff 18%, rgba(84,184,255,.24) 52%, transparent 72%);
+      box-shadow: 0 0 32px rgba(84,184,255,.8), 0 0 90px rgba(141,124,255,.35);
+      animation: aiPulse 2.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes aiPulse {
+      from { transform: scale(.9); opacity: .78; }
+      to { transform: scale(1.07); opacity: 1; }
+    }
+
+    .phone-lines {
+      display: grid;
+      gap: 10px;
+    }
+
+    .phone-line {
+      height: 10px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.1);
+      overflow: hidden;
+    }
+
+    .phone-line span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+    }
+
+    .lyra-copy h2 {
+      margin: 12px 0 16px;
+      font-size: clamp(36px, 5vw, 62px);
+      line-height: .96;
+      letter-spacing: -.06em;
+    }
+
+    .lyra-copy p {
+      margin: 0 0 24px;
+      color: var(--soft);
+      font-size: 18px;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 12px;
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .feature-list li {
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.045);
+      color: var(--soft);
+    }
+
+    .why-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
     }
 
-    .service, .project-card, .why-card {
+    .why-card {
+      padding: 26px;
+      min-height: 240px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
-      box-shadow: 0 18px 52px rgba(0,0,0,.18);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.028));
+      backdrop-filter: blur(16px);
     }
 
-    .service { padding: 24px; min-height: 250px; }
-    .icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+    .why-number {
+      color: var(--blue-2);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      margin-bottom: 52px;
+    }
+
+    .contact-grid {
       display: grid;
-      place-items: center;
-      background: rgba(106,168,255,.13);
-      border: 1px solid rgba(106,168,255,.25);
-      color: var(--cyan);
-      margin-bottom: 24px;
-    }
-
-    .service h3, .why-card h3 { margin: 0 0 10px; font-size: 20px; letter-spacing: -.02em; }
-    .service p, .why-card p { margin: 0; color: var(--muted); font-size: 15px; }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .project-card {
-      overflow: hidden;
-      min-height: 470px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .shot {
-      height: 250px;
-      border-bottom: 1px solid var(--line);
-      background: #0a0d13;
-      padding: 18px;
-    }
-
-    .shot-ui {
-      height: 100%;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: linear-gradient(145deg, #111827, #080a0f);
-      padding: 14px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .shot-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .shot-block {
-      border-radius: 10px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.07);
-    }
-    .accent-blue { background: linear-gradient(135deg, rgba(106,168,255,.26), rgba(105,229,255,.08)); }
-    .accent-green { background: linear-gradient(135deg, rgba(159,242,195,.22), rgba(106,168,255,.08)); }
-    .accent-gold { background: linear-gradient(135deg, rgba(231,200,120,.24), rgba(255,255,255,.05)); }
-
-    .project-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
-    .project-body h3 { margin: 0 0 10px; font-size: 23px; letter-spacing: -.03em; }
-    .project-body p { margin: 0 0 20px; color: var(--muted); font-size: 15px; }
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-    .tag {
-      padding: 6px 10px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--soft);
-      font-size: 12px;
-      background: rgba(255,255,255,.04);
-    }
-
-    .feature {
-      display: grid;
-      grid-template-columns: .95fr 1.05fr;
-      gap: 18px;
+      grid-template-columns: .82fr 1.18fr;
+      gap: 20px;
       align-items: stretch;
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
-      box-shadow: var(--shadow);
-      overflow: hidden;
     }
 
-    .feature-copy { padding: 42px; }
-    .feature-copy h2 { margin: 12px 0 14px; font-size: clamp(32px, 4vw, 52px); line-height: 1.02; letter-spacing: -.045em; }
-    .feature-copy p { color: var(--muted); font-size: 17px; margin: 0 0 26px; }
-    .check-list { display: grid; gap: 12px; color: var(--soft); padding: 0; margin: 0; list-style: none; }
-    .check-list li { display: flex; gap: 10px; }
-    .check-list li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; margin-top: 9px; background: var(--green); flex: 0 0 auto; }
-
-    .feature-visual {
-      min-height: 420px;
-      padding: 28px;
-      border-left: 1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(106,168,255,.09), transparent),
-        #0a0d13;
-      display: grid;
-      align-content: center;
-    }
-
-    .workflow {
-      display: grid;
-      gap: 14px;
-    }
-    .workflow-step {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.05);
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-    }
-    .workflow-step span { color: var(--muted); font-size: 13px; }
-    .status { color: var(--green); font-weight: 760; font-size: 13px; }
-
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .why-card { padding: 26px; }
-
-    .cta {
-      padding: 56px;
+    .contact-copy,
+    .contact-form {
+      padding: 34px;
       border: 1px solid var(--line);
       border-radius: 28px;
-      background:
-        linear-gradient(135deg, rgba(106,168,255,.16), rgba(255,255,255,.025)),
-        #0b0f17;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.03));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.22);
     }
 
-    .cta h2 { margin: 0 0 10px; font-size: clamp(30px, 4vw, 48px); letter-spacing: -.04em; line-height: 1.05; }
-    .cta p { margin: 0; color: var(--muted); max-width: 620px; }
+    .contact-copy h2 {
+      margin: 14px 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .contact-copy p {
+      color: var(--soft);
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(3,5,10,.46);
+      outline: none;
+      padding: 15px 16px;
+      transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+    textarea { min-height: 138px; resize: vertical; }
+    input:focus,
+    textarea:focus {
+      border-color: var(--line-strong);
+      box-shadow: 0 0 0 4px rgba(84,184,255,.1);
+    }
 
     footer {
+      padding: 42px 0;
       border-top: 1px solid var(--line);
-      padding: 34px 0;
       color: var(--muted);
+      background: rgba(3,5,10,.5);
     }
+
     .footer-grid {
       display: flex;
       justify-content: space-between;
@@ -429,70 +824,109 @@
       gap: 24px;
       flex-wrap: wrap;
     }
-    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     .footer-links a:hover { color: var(--text); }
 
-    [data-animate] {
+    .reveal {
       opacity: 0;
-      transform: translateY(18px);
-      animation: rise .7s ease forwards;
-    }
-    [data-animate="2"] { animation-delay: .08s; }
-    [data-animate="3"] { animation-delay: .16s; }
-
-    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-    @keyframes floatIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-    @media (max-width: 980px) {
-      .hero-grid, .feature { grid-template-columns: 1fr; }
-      .hero-visual { min-height: 470px; }
-      .services, .projects-grid, .why-grid { grid-template-columns: 1fr 1fr; }
-      .feature-visual { border-left: 0; border-top: 1px solid var(--line); }
-      .cta { align-items: flex-start; flex-direction: column; }
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
     }
 
-    @media (max-width: 720px) {
-      .container { padding: 0 18px; }
-      .nav-inner { height: 68px; }
-      .nav-links {
-        position: fixed;
-        inset: 68px 16px auto 16px;
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1100px) {
+      .build-grid,
+      .projects-grid,
+      .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .about-grid,
+      .lyra-panel,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel { min-height: 480px; }
+      .phone-wrap { min-height: 470px; }
+      .nav-links,
+      .nav-cta {
         display: none;
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        background: rgba(13,16,23,.96);
-        box-shadow: var(--shadow);
+      }
+
+      .menu { display: inline-flex; align-items: center; justify-content: center; }
+
+      .nav-links.open {
+        display: flex;
+        position: absolute;
+        top: 84px;
+        left: 18px;
+        right: 18px;
         flex-direction: column;
         align-items: stretch;
-      }
-      .nav-links.open { display: flex; }
-      .menu-btn {
-        display: inline-flex;
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
+        gap: 0;
+        padding: 16px;
         border: 1px solid var(--line);
-        background: rgba(255,255,255,.04);
-        color: var(--text);
-        align-items: center;
-        justify-content: center;
+        border-radius: 20px;
+        background: rgba(6,10,18,.96);
+        box-shadow: var(--shadow);
       }
-      .nav-cta { display: none; }
-      .hero { padding: 68px 0 46px; }
-      .hero-meta, .services, .projects-grid, .why-grid { grid-template-columns: 1fr; }
-      .board-body { grid-template-columns: 1fr; }
-      .module.wide { grid-column: auto; }
-      .hero-visual { min-height: auto; }
-      .feature-copy, .cta { padding: 28px; }
-      section { padding: 54px 0; }
+
+      .nav-links.open a {
+        padding: 14px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+      }
+
+      .nav-links.open a:last-child { border-bottom: 0; }
+    }
+
+    @media (max-width: 680px) {
+      .container { padding: 0 18px; }
+      .hero { padding: 112px 0 62px; }
+      .hero-stats,
+      .build-grid,
+      .projects-grid,
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section { padding: 70px 0; }
+      .hero-panel { min-height: 420px; border-radius: 24px; }
+      .core-orb { width: 210px; height: 210px; }
+      .ring { width: 300px; height: 300px; }
+      .ring:nth-child(2) { width: 360px; height: 360px; }
+      .core-label { left: 18px; right: 18px; bottom: 18px; flex-direction: column; }
+      .mission-row { grid-template-columns: 1fr; }
+      .lyra-panel,
+      .contact-copy,
+      .contact-form {
+        padding: 24px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+      *,
+      *::before,
+      *::after {
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
@@ -501,26 +935,36 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "DEE STUDIO",
-      "description": "AI apps, web platforms, automation, and product development studio.",
+      "description": "Premium technology studio building AI apps, websites, mobile apps, automation systems, and futuristic digital products.",
       "url": "https://deestudio.com",
       "logo": "https://deestudio.com/logo.png"
     }
   </script>
 </head>
 <body>
+  <div id="loader" aria-hidden="true">
+    <div class="loader-card">
+      <div class="loader-core"></div>
+      <div>Initializing DEE STUDIO</div>
+    </div>
+  </div>
+
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="glow-trail" id="glowTrail" aria-hidden="true"></div>
+
   <nav class="nav" aria-label="Primary navigation">
     <div class="container nav-inner">
       <a class="brand" href="index.html" aria-label="DEE STUDIO home">
         <img src="logo.png" alt="DEE STUDIO logo" />
         <span>DEE STUDIO</span>
       </a>
-      <button class="menu-btn" id="menuBtn" aria-label="Open navigation" aria-expanded="false">Menu</button>
+      <button class="menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">Menu</button>
       <div class="nav-links" id="navLinks">
-        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#build">What we build</a>
         <a href="#projects">Projects</a>
-        <a href="#systems">Systems</a>
-        <a href="#why">Why us</a>
-        <a href="projects.html">Case studies</a>
+        <a href="#lyra">Lyra AI</a>
+        <a href="#contact">Contact</a>
       </div>
       <a class="nav-cta" href="#contact">Start a project</a>
     </div>
@@ -530,81 +974,91 @@
     <header class="hero">
       <div class="container hero-grid">
         <div>
-          <div class="eyebrow" data-animate>AI Apps / Web Platforms / Automation</div>
-          <h1 data-animate="2">Premium digital products for ambitious companies.</h1>
-          <p class="hero-copy" data-animate="3">DEE STUDIO designs and builds AI-enabled applications, high-performance web platforms, automation systems, and product experiences that feel sharp, reliable, and ready for market.</p>
-          <div class="hero-actions" data-animate="3">
-            <a class="btn btn-primary" href="#contact">Discuss a build</a>
-            <a class="btn btn-secondary" href="#projects">View selected work</a>
+          <div class="eyebrow reveal">Premium Next-Generation Technology Studio</div>
+          <h1 class="gradient-text reveal">We Build The Future Digitally</h1>
+          <p class="hero-copy reveal">DEE STUDIO creates AI apps, websites, mobile apps, automation systems, startup MVPs, and futuristic digital products for brands that want to feel ahead of their market.</p>
+          <div class="hero-actions reveal">
+            <a class="btn btn-primary" href="#contact">Build with us</a>
+            <a class="btn btn-secondary" href="#projects">Explore projects</a>
           </div>
-          <div class="hero-meta" aria-label="Studio highlights">
-            <div class="metric"><strong>AI-first</strong><span>Practical automation and product intelligence</span></div>
-            <div class="metric"><strong>Full-stack</strong><span>Strategy, UX, engineering, launch</span></div>
-            <div class="metric"><strong>Fast</strong><span>Lean builds without sacrificing polish</span></div>
+          <div class="hero-stats reveal">
+            <div class="stat"><strong>AI</strong><span>Apps, assistants, smart workflows</span></div>
+            <div class="stat"><strong>Web + Mobile</strong><span>Premium product interfaces</span></div>
+            <div class="stat"><strong>Automation</strong><span>Systems that scale operations</span></div>
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="DEE STUDIO product operating system preview">
-          <div class="studio-board">
-            <div class="board-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-            <div class="board-body">
-              <div class="module wide">
-                <div class="module-label">Product Command Center</div>
-                <h3>From idea to shipped platform</h3>
-                <p>Research, design, automation logic, interfaces, analytics, and launch systems connected in one product workflow.</p>
-                <div class="bars">
-                  <div class="bar"><span style="width:92%"></span></div>
-                  <div class="bar"><span style="width:74%"></span></div>
-                </div>
-              </div>
-              <div class="module">
-                <div class="module-label">Automation</div>
-                <h3>38 hrs saved</h3>
-                <p>Manual processes replaced by structured flows.</p>
-              </div>
-              <div class="module">
-                <div class="module-label">UX Quality</div>
-                <h3>Premium UI</h3>
-                <p>Interfaces built for trust, speed, and clarity.</p>
-              </div>
-              <div class="module wide">
-                <div class="module-label">Delivery</div>
-                <h3>Prototype, validate, launch, improve.</h3>
-                <p>A practical product development loop for founders and teams that need results, not theater.</p>
-              </div>
+        <div class="hero-panel reveal" id="heroPanel" aria-label="Interactive AI core visual">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="core-orb"></div>
+          <div class="core-label">
+            <div>
+              <strong>Digital Core Engine</strong>
+              <span>AI, design, code, automation, and product strategy in one studio system.</span>
+            </div>
+            <div>
+              <strong>Live</strong>
+              <span>Interactive 3D layer active</span>
             </div>
           </div>
         </div>
       </div>
     </header>
 
-    <section id="services">
+    <section id="about">
       <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Services</div>
-          <h2>What DEE STUDIO builds</h2>
-          <p>Focused technical services for companies that need modern software with premium UX, clean architecture, and a credible market presence.</p>
+        <div class="section-head reveal">
+          <div class="eyebrow">About DEE STUDIO</div>
+          <h2>Innovation built with taste, speed, and technical depth.</h2>
+          <p>DEE STUDIO exists for founders, creators, and companies that need digital products with a premium first impression and serious execution behind the interface.</p>
         </div>
-        <div class="services">
-          <article class="service">
-            <div class="icon">AI</div>
-            <h3>AI Applications</h3>
-            <p>AI-assisted workflows, smart interfaces, internal tools, assistants, and product features designed around real business use cases.</p>
+        <div class="about-grid">
+          <article class="story glass reveal">
+            <p>We combine product thinking, high-end interface design, full-stack engineering, AI capability, and automation strategy to build digital systems that feel futuristic without becoming confusing.</p>
+            <p>The goal is simple: create products that make people stop, trust, interact, and remember the brand.</p>
           </article>
-          <article class="service">
-            <div class="icon">UX</div>
-            <h3>Web Platforms</h3>
-            <p>Marketing sites, SaaS interfaces, marketplaces, dashboards, portals, and responsive web experiences built to convert and scale.</p>
+          <div class="mission-board glass reveal">
+            <div class="mission-row"><span>Vision</span><strong>Make advanced technology feel premium, usable, and commercially powerful.</strong></div>
+            <div class="mission-row"><span>Method</span><strong>Design the experience, engineer the system, automate the workflow, launch the product.</strong></div>
+            <div class="mission-row"><span>Standard</span><strong>No generic templates. No weak visuals. No unclear product story.</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="build">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">What We Build</div>
+          <h2>Future-facing products for modern companies.</h2>
+          <p>From landing pages to intelligent platforms, every build is shaped for clarity, performance, visual impact, and business value.</p>
+        </div>
+        <div class="build-grid">
+          <article class="build-card reveal">
+            <div class="build-icon">AI</div>
+            <h3>AI Apps</h3>
+            <p>Assistants, AI workflows, smart dashboards, and product features powered by intelligent interaction.</p>
           </article>
-          <article class="service">
-            <div class="icon">Ops</div>
+          <article class="build-card reveal">
+            <div class="build-icon">WEB</div>
+            <h3>Websites</h3>
+            <p>Premium marketing sites, startup websites, platforms, portals, and conversion-focused web systems.</p>
+          </article>
+          <article class="build-card reveal">
+            <div class="build-icon">APP</div>
+            <h3>Mobile Apps</h3>
+            <p>Elegant mobile experiences, product prototypes, Android builds, and app interfaces that feel polished.</p>
+          </article>
+          <article class="build-card reveal">
+            <div class="build-icon">OPS</div>
             <h3>Automation Systems</h3>
-            <p>Lead flows, data pipelines, admin operations, payment workflows, CRM handoffs, and repeatable business processes.</p>
+            <p>Lead flows, internal operations, data handoffs, admin workflows, notifications, and business process systems.</p>
           </article>
-          <article class="service">
-            <div class="icon">01</div>
-            <h3>Product Development</h3>
-            <p>From product strategy and interface design to full-stack implementation, deployment, iteration, and growth readiness.</p>
+          <article class="build-card reveal">
+            <div class="build-icon">MVP</div>
+            <h3>Startup MVPs</h3>
+            <p>Lean product strategy, prototypes, launch-ready interfaces, backend foundations, and investor-ready demos.</p>
           </article>
         </div>
       </div>
@@ -612,81 +1066,85 @@
 
     <section id="projects">
       <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Selected Work</div>
-          <h2>Project systems with real business purpose</h2>
-          <p>Each build is treated like a product: clear positioning, strong interface design, reliable engineering, and a measurable path to usage.</p>
+        <div class="section-head reveal">
+          <div class="eyebrow">Featured Projects</div>
+          <h2>Premium project cards with real product direction.</h2>
+          <p>Selected DEE STUDIO work across commerce, fintech, privacy tooling, and full-stack marketplace systems.</p>
         </div>
         <div class="projects-grid">
-          <article class="project-card">
-            <div class="shot">
-              <div class="shot-ui">
-                <div class="shot-block accent-gold"></div>
-                <div class="shot-row"><div class="shot-block"></div><div class="shot-block"></div></div>
-                <div class="shot-block"></div>
-              </div>
+          <article class="project-card reveal">
+            <div class="project-shot">
+              <div class="shot-bar"></div>
+              <div class="shot-main"></div>
+              <div class="shot-grid"><div class="shot-tile"></div><div class="shot-tile"></div></div>
             </div>
-            <div class="project-body">
-              <h3>Luxury Commerce Experience</h3>
-              <p>A refined storefront system for premium catalog browsing, product discovery, and conversion-focused shopping journeys.</p>
-              <div class="tags"><span class="tag">E-commerce</span><span class="tag">UX design</span><span class="tag">Frontend</span></div>
-            </div>
+            <span class="project-tag">Premium Commerce</span>
+            <h3>Princess Collection</h3>
+            <p>Luxury fashion storefront with elevated product browsing, clean catalog structure, and premium e-commerce presentation.</p>
           </article>
 
-          <article class="project-card">
-            <div class="shot">
-              <div class="shot-ui">
-                <div class="shot-row"><div class="shot-block accent-blue"></div><div class="shot-block"></div></div>
-                <div class="shot-block"></div>
-                <div class="shot-row"><div class="shot-block"></div><div class="shot-block accent-blue"></div></div>
-              </div>
+          <article class="project-card reveal">
+            <div class="project-shot">
+              <div class="shot-bar"></div>
+              <div class="shot-grid"><div class="shot-tile"></div><div class="shot-main"></div></div>
+              <div class="shot-tile"></div>
             </div>
-            <div class="project-body">
-              <h3>Finance Lead Platform</h3>
-              <p>A trust-led digital portal for financial services, lead capture, structured content, and professional client acquisition.</p>
-              <div class="tags"><span class="tag">Fintech</span><span class="tag">Lead systems</span><span class="tag">Trust UX</span></div>
-            </div>
+            <span class="project-tag">Fintech Platform</span>
+            <h3>L2D Finserv</h3>
+            <p>Professional finance web platform designed for trust, clear service communication, and structured lead generation.</p>
           </article>
 
-          <article class="project-card">
-            <div class="shot">
-              <div class="shot-ui">
-                <div class="shot-block accent-green"></div>
-                <div class="shot-row"><div class="shot-block"></div><div class="shot-block accent-green"></div></div>
-                <div class="shot-block"></div>
-              </div>
+          <article class="project-card reveal">
+            <div class="project-shot">
+              <div class="shot-main"></div>
+              <div class="shot-bar"></div>
+              <div class="shot-grid"><div class="shot-tile"></div><div class="shot-tile"></div></div>
             </div>
-            <div class="project-body">
-              <h3>Beauty Marketplace System</h3>
-              <p>A full-stack commerce platform with product management, offers, customer flows, reviews, and payment integration.</p>
-              <div class="tags"><span class="tag">Marketplace</span><span class="tag">Full-stack</span><span class="tag">Payments</span></div>
+            <span class="project-tag">Privacy Tool</span>
+            <h3>DeeCryptor</h3>
+            <p>Browser-first privacy utility concept for encrypted pixel-array conversion and lightweight technical interaction.</p>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-shot">
+              <div class="shot-grid"><div class="shot-main"></div><div class="shot-tile"></div></div>
+              <div class="shot-bar"></div>
+              <div class="shot-tile"></div>
             </div>
+            <span class="project-tag">Marketplace</span>
+            <h3>Perlyn Beauty</h3>
+            <p>Full-stack beauty marketplace with commerce flows, offers, reviews, operations, and payment integration.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="systems">
+    <section id="lyra">
       <div class="container">
-        <div class="feature">
-          <div class="feature-copy">
-            <div class="eyebrow">Product Systems</div>
-            <h2>Serious software needs more than a beautiful interface.</h2>
-            <p>DEE STUDIO combines strategy, design, engineering, and automation so products do not just look premium. They work cleanly, support the business, and earn trust from the first visit.</p>
-            <ul class="check-list">
-              <li>Clear product positioning and conversion architecture</li>
-              <li>Responsive interfaces designed for credibility and speed</li>
-              <li>Automation flows that reduce manual operational work</li>
-              <li>Launch-ready SEO, analytics, performance, and trust basics</li>
-            </ul>
-          </div>
-          <div class="feature-visual">
-            <div class="workflow">
-              <div class="workflow-step"><div><strong>Discovery</strong><br><span>Business goals, audience, product scope</span></div><div class="status">Mapped</div></div>
-              <div class="workflow-step"><div><strong>Design</strong><br><span>Brand system, UX flows, interface direction</span></div><div class="status">Refined</div></div>
-              <div class="workflow-step"><div><strong>Build</strong><br><span>Frontend, backend, automations, integrations</span></div><div class="status">Shipped</div></div>
-              <div class="workflow-step"><div><strong>Improve</strong><br><span>Analytics, iteration, performance, growth</span></div><div class="status">Active</div></div>
+        <div class="lyra-panel reveal">
+          <div class="phone-wrap">
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="phone-top"><span>Lyra AI</span><span>Active</span></div>
+                <div class="ai-pulse"></div>
+                <div class="phone-lines">
+                  <div class="phone-line"><span style="width: 82%"></span></div>
+                  <div class="phone-line"><span style="width: 64%"></span></div>
+                  <div class="phone-line"><span style="width: 92%"></span></div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="lyra-copy">
+            <div class="eyebrow">Featured Product</div>
+            <h2>Lyra AI is a futuristic assistant experience.</h2>
+            <p>Lyra represents the DEE STUDIO product philosophy: intelligent, personal, visually premium, and designed to make advanced AI feel natural on a mobile device.</p>
+            <a class="btn btn-primary" href="#contact">Build an AI product</a>
+            <ul class="feature-list">
+              <li>Animated assistant interface with premium mobile-first UX</li>
+              <li>Designed for task support, automation, and intelligent interaction</li>
+              <li>Product-ready direction for AI-powered consumer or internal tools</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -694,23 +1152,31 @@
 
     <section id="why">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div class="eyebrow">Why Choose Us</div>
-          <h2>Built for founders who care about taste and execution</h2>
-          <p>The studio approach is deliberately lean: senior thinking, focused delivery, sharp interfaces, and systems that support real business workflows.</p>
+          <h2>The studio for teams that care about first impression and execution.</h2>
+          <p>DEE STUDIO brings together luxury design taste, product clarity, fast technical delivery, and trust-focused engineering.</p>
         </div>
         <div class="why-grid">
-          <article class="why-card">
-            <h3>Premium design discipline</h3>
-            <p>Modern layouts, clear hierarchy, precise spacing, restrained motion, and brand systems that feel credible instead of noisy.</p>
+          <article class="why-card reveal">
+            <div class="why-number">01</div>
+            <h3>Speed</h3>
+            <p>Fast, focused builds with a clear path from concept to live product.</p>
           </article>
-          <article class="why-card">
-            <h3>Product-minded engineering</h3>
-            <p>Every interface, automation, and integration is shaped around outcomes: users, conversion, reliability, and maintainability.</p>
+          <article class="why-card reveal">
+            <div class="why-number">02</div>
+            <h3>Design</h3>
+            <p>Premium visual systems, modern layouts, cinematic interaction, and high-trust UX.</p>
           </article>
-          <article class="why-card">
-            <h3>High-trust delivery</h3>
-            <p>SEO basics, performance awareness, responsive testing, security-minded flows, and professional polish are treated as essentials.</p>
+          <article class="why-card reveal">
+            <div class="why-number">03</div>
+            <h3>Innovation</h3>
+            <p>AI, automation, 3D, mobile, and web systems built with future-facing product thinking.</p>
+          </article>
+          <article class="why-card reveal">
+            <div class="why-number">04</div>
+            <h3>Trust</h3>
+            <p>Clean structure, responsive behavior, performance awareness, and serious brand presentation.</p>
           </article>
         </div>
       </div>
@@ -718,13 +1184,31 @@
 
     <section id="contact">
       <div class="container">
-        <div class="cta">
-          <div>
-            <div class="eyebrow">Start A Build</div>
-            <h2>Have a product, platform, or automation idea?</h2>
-            <p>Bring the business goal. DEE STUDIO can help shape the experience, design the system, and build the product with a premium technical finish.</p>
+        <div class="contact-grid">
+          <div class="contact-copy reveal">
+            <div class="eyebrow">Contact</div>
+            <h2>Ready to create something impossible to ignore?</h2>
+            <p>Tell DEE STUDIO what you want to build. We will help shape the product direction, visual experience, and technical system.</p>
           </div>
-          <a class="btn btn-primary" href="mailto:hello@deestudio.com?subject=Project%20inquiry%20for%20DEE%20STUDIO">Contact DEE STUDIO</a>
+          <form class="contact-form reveal" action="mailto:hello@deestudio.com" method="post" enctype="text/plain">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="field">
+              <label for="project">Project Type</label>
+              <input id="project" name="project" type="text" placeholder="AI app, website, mobile app, automation, MVP..." />
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Describe the product, goal, timeline, and what success should look like."></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Send project inquiry</button>
+          </form>
         </div>
       </div>
     </section>
@@ -734,9 +1218,10 @@
     <div class="container footer-grid">
       <a class="brand" href="index.html"><img src="logo.png" alt="" /><span>DEE STUDIO</span></a>
       <div class="footer-links">
-        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#build">What we build</a>
         <a href="#projects">Projects</a>
-        <a href="projects.html">Case studies</a>
+        <a href="#lyra">Lyra AI</a>
         <a href="mailto:hello@deestudio.com">hello@deestudio.com</a>
       </div>
       <div>&copy; 2026 DEE STUDIO. All rights reserved.</div>
@@ -744,6 +1229,11 @@
   </footer>
 
   <script>
+    const loader = document.getElementById('loader');
+    window.addEventListener('load', () => {
+      window.setTimeout(() => loader.classList.add('hidden'), 550);
+    });
+
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
     menuBtn.addEventListener('click', () => {
@@ -755,6 +1245,154 @@
         navLinks.classList.remove('open');
         menuBtn.setAttribute('aria-expanded', 'false');
       });
+    });
+
+    const glowTrail = document.getElementById('glowTrail');
+    const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const trail = { x: pointer.x, y: pointer.y };
+    window.addEventListener('pointermove', (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+    }, { passive: true });
+
+    function moveTrail() {
+      trail.x += (pointer.x - trail.x) * 0.08;
+      trail.y += (pointer.y - trail.y) * 0.08;
+      glowTrail.style.transform = `translate3d(${trail.x - 180}px, ${trail.y - 180}px, 0)`;
+      requestAnimationFrame(moveTrail);
+    }
+    moveTrail();
+
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.14 });
+    revealItems.forEach((item) => observer.observe(item));
+
+    const heroPanel = document.getElementById('heroPanel');
+    heroPanel.addEventListener('pointermove', (event) => {
+      const rect = heroPanel.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      heroPanel.style.transform = `perspective(1000px) rotateX(${y * -8}deg) rotateY(${x * 10}deg)`;
+    });
+    heroPanel.addEventListener('pointerleave', () => {
+      heroPanel.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+    });
+
+    const canvas = document.getElementById('scene');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x03050a, 0.0012);
+
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1800);
+    camera.position.set(0, 24, 430);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.65));
+
+    const ambient = new THREE.AmbientLight(0x6aa8ff, 0.38);
+    scene.add(ambient);
+
+    const keyLight = new THREE.PointLight(0x54b8ff, 1.8, 900);
+    keyLight.position.set(180, 220, 260);
+    scene.add(keyLight);
+
+    const purpleLight = new THREE.PointLight(0x8d7cff, 1.1, 700);
+    purpleLight.position.set(-220, -80, 180);
+    scene.add(purpleLight);
+
+    const particlesCount = window.innerWidth < 700 ? 650 : 1300;
+    const particleGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 1200;
+      positions[i + 1] = (Math.random() - 0.5) * 760;
+      positions[i + 2] = (Math.random() - 0.5) * 1000;
+    }
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particles = new THREE.Points(
+      particleGeometry,
+      new THREE.PointsMaterial({
+        size: window.innerWidth < 700 ? 1.5 : 2,
+        color: 0x88dcff,
+        transparent: true,
+        opacity: 0.68,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    scene.add(particles);
+
+    const city = new THREE.Group();
+    const boxMaterial = new THREE.MeshStandardMaterial({
+      color: 0x0f1b2d,
+      roughness: 0.42,
+      metalness: 0.62,
+      emissive: 0x07111f,
+      emissiveIntensity: 0.55
+    });
+    for (let i = 0; i < 72; i++) {
+      const width = 8 + Math.random() * 16;
+      const height = 18 + Math.random() * 100;
+      const depth = 8 + Math.random() * 16;
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), boxMaterial);
+      tower.position.set((Math.random() - 0.5) * 520, -210 + height / 2, (Math.random() - 0.5) * 280);
+      city.add(tower);
+    }
+    scene.add(city);
+
+    const torusMaterial = new THREE.MeshStandardMaterial({
+      color: 0x54b8ff,
+      emissive: 0x145eff,
+      emissiveIntensity: 0.72,
+      metalness: 0.45,
+      roughness: 0.22,
+      transparent: true,
+      opacity: 0.72
+    });
+    const core = new THREE.Group();
+    const torusA = new THREE.Mesh(new THREE.TorusGeometry(96, 1.5, 16, 160), torusMaterial);
+    const torusB = new THREE.Mesh(new THREE.TorusGeometry(132, 1.2, 16, 160), torusMaterial);
+    torusA.rotation.x = Math.PI / 2;
+    torusB.rotation.y = Math.PI / 2.6;
+    core.add(torusA, torusB);
+    scene.add(core);
+
+    const mouse = { x: 0, y: 0 };
+    window.addEventListener('pointermove', (event) => {
+      mouse.x = (event.clientX / window.innerWidth - 0.5) * 2;
+      mouse.y = (event.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    const clock = new THREE.Clock();
+    function animate() {
+      const t = clock.getElapsedTime();
+      const scroll = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+
+      particles.rotation.y = t * 0.025 + scroll * 0.8;
+      particles.rotation.x = t * 0.01;
+      city.rotation.y = Math.sin(t * 0.22) * 0.035 + mouse.x * 0.035;
+      core.rotation.x = t * 0.18 + mouse.y * 0.08;
+      core.rotation.y = t * 0.28 + mouse.x * 0.12;
+      core.position.y = Math.sin(t * 0.8) * 8;
+
+      camera.position.x += (mouse.x * 42 - camera.position.x) * 0.025;
+      camera.position.y += (24 + mouse.y * -22 + scroll * -80 - camera.position.y) * 0.025;
+      camera.lookAt(0, -20, 0);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.65));
     });
   </script>
 </body>
