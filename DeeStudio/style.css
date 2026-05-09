@@ -1,12 +1,4 @@
 * {
-}
-
-.project-content h3 {
-  margin-bottom: 15px;
-}
-
-.project-content p {
-  color: #cfcfcf;
   line-height: 1.6;
 }
 
@@ -66,3 +58,5 @@ footer {
   .menu-btn {
     display: block;
   }
+
+}
